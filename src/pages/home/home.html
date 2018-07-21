@@ -31,20 +31,19 @@
     </ion-card-header>
   </ion-card>
   <ion-list>
-    <ion-item-sliding *ngFor="let message of messages">
+    <ion-item-sliding *ngFor="let cliente of clientes">
       <ion-item>
-        <p>Id: {{message.ID}}</p>
-        <h3>Nombre: {{message.nombre}}</h3>
-        <p>Dirección: {{message.direccion}}</p>
-        <p>Email: {{message.email}}</p>
+        <h3>Nombre: {{cliente.nombre}}</h3>
+        <p>Dirección: {{cliente.direccion}}</p>
+        <p>Email: {{cliente.email}}</p>
       </ion-item>
       <ion-item-options>
-        <button ion-button color="danger" (click)="deleteMessage(message.$key)">
-        <ion-icon name="ios-trash"></ion-icon>
+        <button ion-button color="danger" (click)="deleteMessage(cliente.$key)">
+        <ion-icon name="trash"></ion-icon>
         delete
       </button>
-      <button ion-button color="success" (click)="updateMessage(message)">
-          <ion-icon name="ios-create"></ion-icon>
+      <button ion-button color="success" (click)="updateMessage(cliente)">
+          <ion-icon name="create"></ion-icon>
           edit
         </button>
       </ion-item-options>
