@@ -37,8 +37,9 @@ addMessage(){
   }
   this.isEditing = false;
   //clear form
-  this.model.title = '';
-  this.model.text = '';
+  this.model.nombre = '';
+  this.model.direccion = '';
+  this.model.email = '';
 }
  
 updateMessage(obj){

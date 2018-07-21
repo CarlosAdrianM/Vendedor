@@ -7,18 +7,22 @@
 </ion-header>
  
 <ion-content padding>
-<ion-list>
+  <ion-list>
     <ion-item>
-        <ion-label floating>Nombre:</ion-label>
-        <ion-input type="text" value="" [(ngModel)]="model.title"></ion-input>
-      </ion-item>            
-      <ion-item>
-        <ion-label floating>Dirección:</ion-label>
-        <ion-textarea   type="text" row="10" [(ngModel)]="model.text"></ion-textarea>
-      </ion-item>
-      <ion-item>
-          <button type="button" (click)="addMessage()" ion-button full>Guardar</button>
-      </ion-item>
+      <ion-label floating>Nombre:</ion-label>
+      <ion-input type="text" value="" [(ngModel)]="model.nombre"></ion-input>
+    </ion-item>            
+    <ion-item>
+      <ion-label floating>Dirección:</ion-label>
+      <ion-textarea   type="text" row="10" [(ngModel)]="model.direccion"></ion-textarea>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Email:</ion-label>
+      <ion-input type="text" value="" [(ngModel)]="model.email"></ion-input>
+    </ion-item>
+    <ion-item>
+        <button type="button" (click)="addMessage()" ion-button full>Guardar</button>
+    </ion-item>
 </ion-list>
  
   <ion-card>
@@ -29,8 +33,10 @@
   <ion-list>
     <ion-item-sliding *ngFor="let message of messages">
       <ion-item>
-        <h3>title: {{message.title}}</h3>
-        <p>body: {{message.text}}</p>
+        <p>Id: {{message.ID}}</p>
+        <h3>Nombre: {{message.nombre}}</h3>
+        <p>Dirección: {{message.direccion}}</p>
+        <p>Email: {{message.email}}</p>
       </ion-item>
       <ion-item-options>
         <button ion-button color="danger" (click)="deleteMessage(message.$key)">
