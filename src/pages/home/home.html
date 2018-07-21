@@ -1,7 +1,7 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
-      Ionic Crud example
+      Clientes
     </ion-title>
   </ion-navbar>
 </ion-header>
@@ -9,15 +9,15 @@
 <ion-content padding>
 <ion-list>
     <ion-item>
-        <ion-label floating>Message title :</ion-label>
+        <ion-label floating>Nombre:</ion-label>
         <ion-input type="text" value="" [(ngModel)]="model.title"></ion-input>
       </ion-item>            
       <ion-item>
-        <ion-label floating>Message body :</ion-label>
+        <ion-label floating>Dirección:</ion-label>
         <ion-textarea   type="text" row="10" [(ngModel)]="model.text"></ion-textarea>
       </ion-item>
       <ion-item>
-          <button type="button" (click)="addMessage()" ion-button full >Submit</button>
+          <button type="button" (click)="addMessage()" ion-button full>Guardar</button>
       </ion-item>
 </ion-list>
  
