@@ -22,7 +22,7 @@ firebase.initializeApp(config);
 firebase.firestore().enablePersistence()
   .then(function() {
       // Initialize Cloud Firestore through firebase
-      var db = firebase.firestore();
+      //var db = firebase.firestore();
   })
   .catch(function(err) {
       if (err.code == 'failed-precondition') {
