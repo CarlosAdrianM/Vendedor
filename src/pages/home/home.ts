@@ -26,6 +26,7 @@ export class HomePage {
     }
         
     addMessage(){
+        this.model.usuario = firebase.auth().currentUser.uid;
         if(!this.isEditing){
             this.addDocument("clientes", this.model).then(()=>{
                 this.loadData();//refresh view
