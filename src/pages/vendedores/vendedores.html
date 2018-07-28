@@ -1,0 +1,57 @@
+<ion-header>
+        <ion-navbar>
+          <button ion-button menuToggle>
+              <ion-icon name="menu"></ion-icon>
+          </button>
+          <ion-title>
+            Vendedores
+          </ion-title>
+        </ion-navbar>
+      </ion-header>
+       
+      <ion-content padding>
+        <ion-list>
+          <ion-item>
+            <ion-label floating>Nombre:</ion-label>
+            <ion-input type="text" value="" [(ngModel)]="model.nombre"></ion-input>
+          </ion-item>            
+          <ion-item>
+            <ion-label floating>Dirección:</ion-label>
+            <ion-textarea   type="text" row="10" [(ngModel)]="model.direccion"></ion-textarea>
+          </ion-item>
+          <ion-item>
+            <ion-label floating>Email:</ion-label>
+            <ion-input type="text" value="" [(ngModel)]="model.email"></ion-input>
+          </ion-item>
+          <ion-item>
+              <button type="button" (click)="addMessage()" ion-button full>Guardar</button>
+          </ion-item>
+      </ion-list>
+       
+        <ion-card>
+          <ion-card-header>
+            Swipe item to the left to delete or edit
+          </ion-card-header>
+        </ion-card>
+        <ion-list>
+          <ion-item-sliding *ngFor="let vendedor of vendedores">
+            <ion-item>
+              <h3>Nombre: {{vendedor.nombre}}</h3>
+              <p>Dirección: {{vendedor.direccion}}</p>
+              <p>Email: {{vendedor.email}}</p>
+              <p>Usuario: {{vendedor.usuario}}</p>
+            </ion-item>
+            <ion-item-options>
+              <button ion-button color="danger" (click)="deleteMessage(vendedor.$key)">
+              <ion-icon name="trash"></ion-icon>
+              delete
+            </button>
+            <button ion-button color="success" (click)="updateMessage(vendedor)">
+                <ion-icon name="create"></ion-icon>
+                edit
+              </button>
+            </ion-item-options>
+          </ion-item-sliding>
+        </ion-list>
+       
+      </ion-content>

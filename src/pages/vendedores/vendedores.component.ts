@@ -2,14 +2,13 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { MainService } from '../../app/main.service';
 
-
 @Component({
-  selector: 'page-home',
-  templateUrl: 'home.html'
+  selector: 'vendedores',
+  templateUrl: 'vendedores.html'
 })
-export class HomePage {
+export class VendedoresComponent {
 
-  clientes: any;
+  vendedores: any;
   model: any = {};
   isEditing: boolean = false;
 
@@ -18,18 +17,18 @@ export class HomePage {
   }
 
     loadData(){
-        this.mainService.getAllDocuments("clientes").then((e)=>{
-            this.clientes = e;
+        this.mainService.getAllDocuments("vendedores").then((e)=>{
+            this.vendedores = e;
         });
     }
         
     addMessage(){
         if(!this.isEditing){
-            this.mainService.addDocument("clientes", this.model).then(()=>{
+            this.mainService.addDocument("vendedores", this.model).then(()=>{
                 this.loadData();//refresh view
             });
         }else{
-            this.mainService.updateDocument("clientes", this.model.$key, this.model).then(()=>{
+            this.mainService.updateDocument("vendedores", this.model.$key, this.model).then(()=>{
                 this.loadData();//refresh view
             });
         }
@@ -47,7 +46,7 @@ export class HomePage {
     }
     
     deleteMessage(key){
-    this.mainService.deleteDocument("clientes", key).then(()=>{
+    this.mainService.deleteDocument("vendedores", key).then(()=>{
         this.loadData();//refresh view
         this.isEditing = false;
     });

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import firebase from 'firebase/app';
+import firebase from 'firebase';
 import 'firebase/auth';
 import * as firebaseui from 'firebaseui';
 
@@ -21,7 +21,7 @@ export class AuthProvider {
     return {
       callbacks: {
         signInSuccessWithAuthResult: (authResult: firebase.auth.UserCredential) => {
-          const user = authResult.user;
+          //const user = authResult.user;
           const isNewUser = authResult.additionalUserInfo.isNewUser;
 
           // initialize new user

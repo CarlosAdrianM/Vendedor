@@ -5,15 +5,17 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
-import firebase from '../../node_modules/firebase';
+import firebase from 'firebase';
+import { VendedoresComponent } from '../pages/vendedores/vendedores.component';
 
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
   @ViewChild('rootNav') rootNav;
-  rootPage:any = LoginPage;
+  rootPage:any = HomePage;
   firstRun: boolean = true;
+  pages: Array<{title: string, component: any}>;
 
   constructor(private platform: Platform, private statusBar: StatusBar, private splashScreen: SplashScreen) {
     /*
@@ -33,7 +35,7 @@ export class MyApp {
     messagingSenderId: "356423060798"
   };
   firebase.initializeApp(config);
-  
+  firebase.firestore().settings({ timestampsInSnapshots: true });
   firebase.firestore().enablePersistence()
     .then(function() {
         // Initialize Cloud Firestore through firebase
@@ -50,6 +52,12 @@ export class MyApp {
             // ...
         }
     });
+
+    this.pages = [
+      { title: 'Clientes', component: HomePage },
+      { title: 'Vendedores', component: VendedoresComponent },
+      { title: 'Login', component: LoginPage }
+    ];
   }
 
   ngAfterViewInit() {
@@ -84,6 +92,5 @@ export class MyApp {
       this.rootNav.setRoot(page);
     }
   }
-  
 }
 
