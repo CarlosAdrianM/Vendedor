@@ -24,7 +24,7 @@ export class VendedoresComponent {
         
     addMessage(){
         if(!this.isEditing){
-            this.mainService.addDocument("vendedores", this.model).then(()=>{
+            this.mainService.setDocument("vendedores", this.model, this.model.codigo).then(()=>{
                 this.loadData();//refresh view
             });
         }else{
@@ -34,10 +34,10 @@ export class VendedoresComponent {
         }
         this.isEditing = false;
         //clear form
+        this.model.codigo = '';
         this.model.nombre = '';
-        this.model.direccion = '';
         this.model.email = '';
-        this.model.usuario = '';
+        this.model.estado = 0;
     }
     
     updateMessage(obj){

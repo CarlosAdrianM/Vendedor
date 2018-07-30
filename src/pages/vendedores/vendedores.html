@@ -11,18 +11,22 @@
        
       <ion-content padding>
         <ion-list>
+            <ion-item>
+                <ion-label floating>Código:</ion-label>
+                <ion-input required type="text" value="" [(ngModel)]="model.codigo"></ion-input>
+            </ion-item>                
           <ion-item>
             <ion-label floating>Nombre:</ion-label>
             <ion-input type="text" value="" [(ngModel)]="model.nombre"></ion-input>
-          </ion-item>            
-          <ion-item>
-            <ion-label floating>Dirección:</ion-label>
-            <ion-textarea   type="text" row="10" [(ngModel)]="model.direccion"></ion-textarea>
           </ion-item>
           <ion-item>
             <ion-label floating>Email:</ion-label>
-            <ion-input type="text" value="" [(ngModel)]="model.email"></ion-input>
+            <ion-input email type="email" value="" [(ngModel)]="model.email"></ion-input>
           </ion-item>
+          <ion-item>
+              <ion-label floating>Estado:</ion-label>
+              <ion-input type="number" value="" [(ngModel)]="model.estado"></ion-input>
+            </ion-item>
           <ion-item>
               <button type="button" (click)="addMessage()" ion-button full>Guardar</button>
           </ion-item>
@@ -30,14 +34,14 @@
        
         <ion-card>
           <ion-card-header>
-            Swipe item to the left to delete or edit
+            Opciones moviendo a izquierda
           </ion-card-header>
         </ion-card>
         <ion-list>
           <ion-item-sliding *ngFor="let vendedor of vendedores">
             <ion-item>
+              <p>Código: {{vendedor.codigo}}</p>
               <h3>Nombre: {{vendedor.nombre}}</h3>
-              <p>Dirección: {{vendedor.direccion}}</p>
               <p>Email: {{vendedor.email}}</p>
               <p>Usuario: {{vendedor.usuario}}</p>
             </ion-item>

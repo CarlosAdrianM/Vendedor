@@ -18,12 +18,15 @@ export class MainService {
           .then((querySnapshot) => {
               let arr = [];
               querySnapshot.forEach(function (doc) {
-                  var obj = JSON.parse(JSON.stringify(doc.data()));
+                  var obj = doc.data();
+                  //var data_stringify = JSON.stringify(data);
+                  //var obj = JSON.parse(data_stringify);
                   obj.$key = doc.id
                   console.log(obj)
                   arr.push(obj);
               });
 
+              
               if (arr.length > 0) {
                   console.log("Document data:", arr);
                   resolve(arr);
@@ -31,6 +34,7 @@ export class MainService {
                   console.log("No such document!");
                   resolve(null);
               }
+              
           })
           .catch((error: any) => {
               reject(error);
@@ -59,6 +63,21 @@ export class MainService {
   
     return new Promise((resolve, reject) => {
       this.db.collection(collectionName).add(dataObj)
+          .then((obj: any) => {
+              resolve(obj);
+          })
+          .catch((error: any) => {
+              reject(error);
+          });
+      });
+  }
+
+  setDocument(collectionName: string, dataObj: any, docID: string): Promise<any> {
+    dataObj.usuario = firebase.auth().currentUser.uid;
+    dataObj.fechaCreacion = firebase.firestore.Timestamp.now();
+  
+    return new Promise((resolve, reject) => {
+      this.db.collection(collectionName).doc(docID).set(dataObj)
           .then((obj: any) => {
               resolve(obj);
           })

@@ -17,12 +17,33 @@
     </ion-item>            
     <ion-item>
       <ion-label floating>Dirección:</ion-label>
-      <ion-textarea   type="text" row="10" [(ngModel)]="model.direccion"></ion-textarea>
+      <ion-textarea type="text" row="10" [(ngModel)]="model.direccion"></ion-textarea>
     </ion-item>
     <ion-item>
-      <ion-label floating>Email:</ion-label>
-      <ion-input type="text" value="" [(ngModel)]="model.email"></ion-input>
+      <ion-label floating>Provincia:</ion-label>
+      <ion-select [(ngModel)]="provincia">
+        <ion-option *ngFor="let prov of provincias" [value]="prov">{{prov.nombre}}</ion-option>
+      </ion-select>
     </ion-item>
+    <ion-item *ngIf="provincia">
+      <ion-label floating>Municipio:</ion-label>
+      <ion-select [(ngModel)]="municipio">
+        <ion-option *ngFor="let municip of municipios" [value]="municip">{{municip.nombre}}</ion-option>
+      </ion-select>
+    </ion-item>  
+    <ion-item>
+      <ion-label floating>Email:</ion-label>
+      <ion-input email type="email" value="" [(ngModel)]="model.email"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Teléfono:</ion-label>
+      <ion-input type="text" value="" [(ngModel)]="model.telefono"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Código Postal:</ion-label>
+      <ion-input type="text" value="" [(ngModel)]="model.codPostal"></ion-input>
+    </ion-item>
+    
     <ion-item>
         <button type="button" (click)="addMessage()" ion-button full>Guardar</button>
     </ion-item>
@@ -30,7 +51,7 @@
  
   <ion-card>
     <ion-card-header>
-      Swipe item to the left to delete or edit
+      Opciones desplazando a la izquierda
     </ion-card-header>
   </ion-card>
   <ion-list>

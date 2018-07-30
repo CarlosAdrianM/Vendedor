@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import firebase from 'firebase';
 import 'firebase/auth';
 import * as firebaseui from 'firebaseui';
+import { MainService } from '../../app/main.service';
 
 
 @Injectable()
@@ -27,6 +28,8 @@ export class AuthProvider {
           // initialize new user
           if (isNewUser) {
             // do initialization stuff here (ex. create profile)
+            let mainService = new MainService();
+            mainService.addDocument("usuarios",{})
             return false;
           }
 
