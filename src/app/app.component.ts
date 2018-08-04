@@ -1,9 +1,9 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { HomePage } from '../pages/home/home';
+import { ClientesComponent } from '../pages/clientes/clientes.component';
 import { LoginPage } from '../pages/login/login';
 import firebase from 'firebase';
 import { VendedoresComponent } from '../pages/vendedores/vendedores.component';
@@ -11,9 +11,9 @@ import { VendedoresComponent } from '../pages/vendedores/vendedores.component';
 @Component({
   templateUrl: 'app.html'
 })
-export class MyApp {
+export class MyApp implements OnInit {
   @ViewChild('rootNav') rootNav;
-  rootPage:any = HomePage;
+  rootPage:any;
   firstRun: boolean = true;
   pages: Array<{title: string, component: any}>;
 
@@ -54,18 +54,18 @@ export class MyApp {
     });
 
     this.pages = [
-      { title: 'Clientes', component: HomePage },
+      { title: 'Clientes', component: ClientesComponent },
       { title: 'Vendedores', component: VendedoresComponent },
       { title: 'Login', component: LoginPage }
     ];
   }
 
-  ngAfterViewInit() {
+  ngOnInit(): void {
 
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         // User is authenticated.
-        this.setRootPage(HomePage);
+        this.setRootPage(ClientesComponent);
       } else {
         // User is not authenticated.
         this.setRootPage(LoginPage);

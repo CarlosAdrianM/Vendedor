@@ -11,11 +11,11 @@
  
 <ion-content padding>
   <ion-list>
-    <ion-item>
+    <ion-item *ngIf="mostrarDetalle">
       <ion-label floating>Nombre:</ion-label>
       <ion-input type="text" value="" [(ngModel)]="model.nombre"></ion-input>
     </ion-item>            
-    <ion-item>
+    <ion-item *ngIf="mostrarDetalle">
       <ion-label floating>Dirección:</ion-label>
       <ion-textarea type="text" row="10" [(ngModel)]="model.direccion"></ion-textarea>
     </ion-item>
@@ -31,20 +31,21 @@
         <ion-option *ngFor="let municip of municipios" [value]="municip">{{municip.nombre}}</ion-option>
       </ion-select>
     </ion-item>  
-    <ion-item>
+    <selector-vendedores *ngIf="mostrarDetalle && vendedor" etiqueta="Vendedor:" [seleccionado]="vendedor" (seleccionar)="seleccionarVendedor($event)"></selector-vendedores>
+    <ion-item *ngIf="mostrarDetalle">
       <ion-label floating>Email:</ion-label>
       <ion-input email type="email" value="" [(ngModel)]="model.email"></ion-input>
     </ion-item>
-    <ion-item>
+    <ion-item *ngIf="mostrarDetalle">
       <ion-label floating>Teléfono:</ion-label>
       <ion-input type="text" value="" [(ngModel)]="model.telefono"></ion-input>
     </ion-item>
-    <ion-item>
-      <ion-label floating>Código Postal:</ion-label>
-      <ion-input type="text" value="" [(ngModel)]="model.codPostal"></ion-input>
+    <ion-item *ngIf="mostrarDetalle">
+      <ion-label floating>Comentarios:</ion-label>
+      <ion-textarea value="" [(ngModel)]="model.comentarios"></ion-textarea>
     </ion-item>
-    
-    <ion-item>
+        
+    <ion-item *ngIf="mostrarDetalle">
         <button type="button" (click)="addMessage()" ion-button full>Guardar</button>
     </ion-item>
 </ion-list>
@@ -57,10 +58,10 @@
   <ion-list>
     <ion-item-sliding *ngFor="let cliente of clientes">
       <ion-item>
-        <h3>Nombre: {{cliente.nombre}}</h3>
-        <p>Dirección: {{cliente.direccion}}</p>
-        <p>Email: {{cliente.email}}</p>
-        <p>Usuario: {{cliente.usuario}}</p>
+        <h3>{{cliente.nombre}}</h3>
+        <p>{{cliente.direccion}}</p>
+        <p *ngIf="cliente.email">Email: {{cliente.email}}</p>
+        <p *ngIf="cliente.comentarios">Comentarios: {{cliente.comentarios}}</p>
       </ion-item>
       <ion-item-options>
         <button ion-button color="danger" (click)="deleteMessage(cliente.$key)">
@@ -74,5 +75,9 @@
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>
- 
+
+  <ion-fab *ngIf="!isEditing" right bottom (click)="crearCliente()">
+    <button ion-fab><ion-icon name="add"></ion-icon></button>
+  </ion-fab>
+
 </ion-content>

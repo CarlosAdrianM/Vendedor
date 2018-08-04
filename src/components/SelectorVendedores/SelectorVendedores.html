@@ -1,0 +1,6 @@
+<ion-item>
+    <ion-label floating>{{etiqueta}}</ion-label>
+    <ion-select [(ngModel)]="seleccionado" (ionChange)="seleccionarDato(seleccionado)">
+        <ion-option *ngFor="let vendedor of datosFiltrados" value="{{vendedor.codigo}}" checked="vendedor.vendedor===seleccionado">{{vendedor.nombre}}</ion-option>
+    </ion-select>
+</ion-item>

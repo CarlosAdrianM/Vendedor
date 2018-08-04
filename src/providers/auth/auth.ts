@@ -29,7 +29,8 @@ export class AuthProvider {
           if (isNewUser) {
             // do initialization stuff here (ex. create profile)
             let mainService = new MainService();
-            mainService.addDocument("usuarios",{})
+            let nuevoUsuario = {}
+            mainService.setDocument("usuarios",nuevoUsuario,authResult.user.uid);
             return false;
           }
 

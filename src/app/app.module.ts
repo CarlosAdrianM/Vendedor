@@ -7,17 +7,23 @@ import { MainService } from './main.service';
 
 import { MyApp } from './app.component';
 
-import { HomePage } from '../pages/home/home';
+import { ClientesComponent } from '../pages/clientes/clientes.component';
+import { ClientesService } from '../pages/clientes/clientes.service';
 import { AuthProvider } from '../providers/auth/auth';
 import { LoginPage } from '../pages/login/login';
 import { VendedoresComponent } from '../pages/vendedores/vendedores.component';
+import { SelectorVendedoresComponent } from '../components/SelectorVendedores/SelectorVendedores.component';
+import { SelectorVendedoresService } from '../components/SelectorVendedores/SelectorVendedores.service';
+
+
 
 @NgModule({
   declarations: [
     MyApp,
-    HomePage,
+    ClientesComponent,
     LoginPage,
-    VendedoresComponent
+    VendedoresComponent,
+    SelectorVendedoresComponent
   ],
   imports: [
     BrowserModule,
@@ -26,16 +32,19 @@ import { VendedoresComponent } from '../pages/vendedores/vendedores.component';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage,
+    ClientesComponent,
     LoginPage,
-    VendedoresComponent
+    VendedoresComponent,
+    SelectorVendedoresComponent
   ],
   providers: [
     MainService,
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    AuthProvider
+    AuthProvider,
+    ClientesService,
+    SelectorVendedoresService
   ]
 })
 export class AppModule {}
