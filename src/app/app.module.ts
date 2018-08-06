@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { ErrorHandler, NgModule } from '@angular/core';
+import { ErrorHandler, NgModule, LOCALE_ID } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -14,8 +14,14 @@ import { LoginPage } from '../pages/login/login';
 import { VendedoresComponent } from '../pages/vendedores/vendedores.component';
 import { SelectorVendedoresComponent } from '../components/SelectorVendedores/SelectorVendedores.component';
 import { SelectorVendedoresService } from '../components/SelectorVendedores/SelectorVendedores.service';
+import { VisitasComponent } from '../pages/visitas/visitas.component';
+import { VisitasService } from '../pages/visitas/visitas.service';
 
+import { registerLocaleData } from '@angular/common';
+import localeEsDo from '@angular/common/locales/es-DO';
+import localeEsDoExtra from '@angular/common/locales/extra/es-DO';
 
+registerLocaleData(localeEsDo, localeEsDoExtra);
 
 @NgModule({
   declarations: [
@@ -23,7 +29,8 @@ import { SelectorVendedoresService } from '../components/SelectorVendedores/Sele
     ClientesComponent,
     LoginPage,
     VendedoresComponent,
-    SelectorVendedoresComponent
+    SelectorVendedoresComponent,
+    VisitasComponent
   ],
   imports: [
     BrowserModule,
@@ -35,16 +42,19 @@ import { SelectorVendedoresService } from '../components/SelectorVendedores/Sele
     ClientesComponent,
     LoginPage,
     VendedoresComponent,
-    SelectorVendedoresComponent
+    SelectorVendedoresComponent,
+    VisitasComponent
   ],
   providers: [
     MainService,
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
+    { provide: LOCALE_ID, useValue: 'es-DO' },
     AuthProvider,
     ClientesService,
-    SelectorVendedoresService
+    SelectorVendedoresService,
+    VisitasService
   ]
 })
 export class AppModule {}

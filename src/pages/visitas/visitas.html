@@ -1,0 +1,59 @@
+<ion-header>
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>
+        Vendedores
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-list>
+        <ion-item>
+            <ion-label floating>Nivel de Interés:</ion-label>
+            <ion-select [(ngModel)]="model.nivelInteres">
+                <ion-option value="0">Primera Visita</ion-option>
+                <ion-option value="1">Sin interés</ion-option>
+                <ion-option value="2">Producto despierta interés</ion-option>
+                <ion-option value="3">A falta solo de detalles</ion-option>
+                <ion-option value="4">Venta cerrada</ion-option>
+            </ion-select>
+        </ion-item>
+        <ion-item>
+            <ion-label floating>Comentarios:</ion-label>
+            <ion-textarea [(ngModel)]="model.comentarios"></ion-textarea>
+        </ion-item>
+
+        <ion-item>
+            <button type="button" (click)="addVisita()" ion-button full>Guardar</button>
+        </ion-item>
+    </ion-list>
+
+    <ion-card>
+        <ion-card-header>
+            Opciones moviendo a izquierda
+        </ion-card-header>
+    </ion-card>
+    <ion-list>
+        <ion-item-sliding *ngFor="let visita of visitas">
+            <ion-item>
+                <p>Fecha: {{visita.fecha.toDate() | date:locale}}</p>
+                <h3>Nivel de interés: {{visita.nivelInteres}}</h3>
+                <p *ngIf="visita.comentarios">{{visita.comentarios}}</p>
+            </ion-item>
+            <ion-item-options>
+                <button ion-button color="danger" (click)="deleteMessage(visita.$key)">
+                    <ion-icon name="trash"></ion-icon>
+                    delete
+                </button>
+                <button ion-button color="success" (click)="updateMessage(visita)">
+                    <ion-icon name="create"></ion-icon>
+                    edit
+                </button>
+            </ion-item-options>
+        </ion-item-sliding>
+    </ion-list>
+  
+</ion-content>

@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { MainService } from '../../app/main.service';
 import { ClientesService } from './clientes.service';
+import { VisitasComponent } from '../visitas/visitas.component';
 
 @Component({
   selector: 'clientes',
@@ -120,5 +121,9 @@ export class ClientesComponent {
 
     crearCliente() {
         this.mostrarDetalle = true;
+    }
+
+    crearVisita(cliente: string) {
+        this.navCtrl.push(VisitasComponent, { cliente: cliente });
     }
 }

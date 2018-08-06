@@ -64,10 +64,14 @@
         <p *ngIf="cliente.comentarios">Comentarios: {{cliente.comentarios}}</p>
       </ion-item>
       <ion-item-options>
+        <button ion-button color="secondary" (click)="crearVisita(cliente.$key)">
+          <ion-icon name="book"></ion-icon>
+          visita
+        </button>
         <button ion-button color="danger" (click)="deleteMessage(cliente.$key)">
-        <ion-icon name="trash"></ion-icon>
-        delete
-      </button>
+          <ion-icon name="trash"></ion-icon>
+          delete
+        </button>
       <button ion-button color="success" (click)="updateMessage(cliente)">
           <ion-icon name="create"></ion-icon>
           edit
