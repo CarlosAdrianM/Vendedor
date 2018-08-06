@@ -11,14 +11,6 @@
  
 <ion-content padding>
   <ion-list>
-    <ion-item *ngIf="mostrarDetalle">
-      <ion-label floating>Nombre:</ion-label>
-      <ion-input type="text" value="" [(ngModel)]="model.nombre"></ion-input>
-    </ion-item>            
-    <ion-item *ngIf="mostrarDetalle">
-      <ion-label floating>Dirección:</ion-label>
-      <ion-textarea type="text" row="10" [(ngModel)]="model.direccion"></ion-textarea>
-    </ion-item>
     <ion-item>
       <ion-label floating>Provincia:</ion-label>
       <ion-select [(ngModel)]="provincia">
@@ -30,8 +22,22 @@
       <ion-select [(ngModel)]="municipio">
         <ion-option *ngFor="let municip of municipios" [value]="municip">{{municip.nombre}}</ion-option>
       </ion-select>
+    </ion-item>
+    <ion-item *ngIf="municipio">
+      <ion-label floating>Distrito:</ion-label>
+      <ion-select [(ngModel)]="distrito">
+        <ion-option *ngFor="let distr of distritos" [value]="distr">{{distr.nombre}}</ion-option>
+      </ion-select>
     </ion-item>  
     <selector-vendedores *ngIf="mostrarDetalle && vendedor" etiqueta="Vendedor:" [seleccionado]="vendedor" (seleccionar)="seleccionarVendedor($event)"></selector-vendedores>
+    <ion-item *ngIf="mostrarDetalle">
+      <ion-label floating>Nombre:</ion-label>
+      <ion-input type="text" value="" [(ngModel)]="model.nombre"></ion-input>
+    </ion-item>            
+    <ion-item *ngIf="mostrarDetalle">
+      <ion-label floating>Dirección:</ion-label>
+      <ion-input type="text" value="" [(ngModel)]="model.direccion"></ion-input>
+    </ion-item>
     <ion-item *ngIf="mostrarDetalle">
       <ion-label floating>Email:</ion-label>
       <ion-input email type="email" value="" [(ngModel)]="model.email"></ion-input>
@@ -64,10 +70,6 @@
         <p *ngIf="cliente.comentarios">Comentarios: {{cliente.comentarios}}</p>
       </ion-item>
       <ion-item-options>
-        <button ion-button color="secondary" (click)="crearVisita(cliente.$key)">
-          <ion-icon name="book"></ion-icon>
-          visita
-        </button>
         <button ion-button color="danger" (click)="deleteMessage(cliente.$key)">
           <ion-icon name="trash"></ion-icon>
           delete
@@ -76,7 +78,11 @@
           <ion-icon name="create"></ion-icon>
           edit
         </button>
-      </ion-item-options>
+        <button ion-button color="secondary" (click)="crearVisita(cliente.$key)">
+            <ion-icon name="book"></ion-icon>
+            visita
+          </button>
+        </ion-item-options>
     </ion-item-sliding>
   </ion-list>
 

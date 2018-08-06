@@ -11,12 +11,12 @@ export class ClientesService {
     this.db = firebase.firestore();
   }
 
-  getAllClientes(provincia: any, municipio: any): Promise<any> {
-      var refMunicipio = this.db.collection("provincias").doc(provincia.$key).collection("municipios").doc(municipio.$key);
+  getAllClientes(provincia: any, municipio: any, distrito: any): Promise<any> {
+      var refDistrito = this.db.collection("provincias").doc(provincia.$key).collection("municipios").doc(municipio.$key).collection("distritos").doc(distrito.$key);
   return new Promise((resolve, reject) => {
       this.db.collection("clientes")
         //.where('provincia','==', provincia.$key)
-        .where('municipio', '==', refMunicipio)
+        .where('distrito', '==', refDistrito)
         .get()
         .then((querySnapshot) => {
             let arr = [];
@@ -60,20 +60,22 @@ export class ClientesService {
       });
   }
 
-  addCliente(dataObj: any, provincia:any, municipio:any, vendedor: string): Promise<any> {
+  addCliente(dataObj: any, provincia:any, municipio:any, distrito: any, vendedor: string): Promise<any> {
     
     dataObj.usuario = firebase.auth().currentUser.uid;
     dataObj.fechaCreacion = firebase.firestore.Timestamp.now();
 
     dataObj.provincia = this.db.collection("provincias").doc(provincia.$key);
     dataObj.municipio = dataObj.provincia.collection("municipios").doc(municipio.$key);
+    dataObj.distrito = dataObj.municipio.collection("distritos").doc(distrito.$key);
     dataObj.vendedor = this.db.collection("vendedores").doc(vendedor);
   
     var uidUsuario = firebase.auth().currentUser.uid;
     var usuarioRef = this.db.collection("usuarios").doc(uidUsuario);
     usuarioRef.set({
         ultimaProvincia: provincia.$key,
-        ultimoMunicipio: municipio.$key
+        ultimoMunicipio: municipio.$key,
+        ultimoDistrito: distrito.$key
     },{merge:true});
     return new Promise((resolve, reject) => {
       this.db.collection("clientes").add(dataObj)
@@ -101,18 +103,20 @@ export class ClientesService {
       });
   }
 
-  updateDocument(collectionName: string, docID: string, dataObj: any, provincia:any, municipio:any, vendedor: string): Promise<any> {
+  updateDocument(collectionName: string, docID: string, dataObj: any, provincia:any, municipio:any, distrito: any, vendedor: string): Promise<any> {
     dataObj.usuario = firebase.auth().currentUser.uid;
     dataObj.fechaModificacion = firebase.firestore.Timestamp.now();
     dataObj.provincia = this.db.collection("provincias").doc(provincia.$key);
     dataObj.municipio = dataObj.provincia.collection("municipios").doc(municipio.$key);
+    dataObj.distrito = dataObj.municipio.collection("distritos").doc(distrito.$key);
     dataObj.vendedor = this.db.collection("vendedores").doc(vendedor);
   
     var uidUsuario = firebase.auth().currentUser.uid;
     var usuarioRef = this.db.collection("usuarios").doc(uidUsuario);
     usuarioRef.set({
         ultimaProvincia: provincia.$key,
-        ultimoMunicipio: municipio.$key
+        ultimoMunicipio: municipio.$key,
+        ultimoDistrito: distrito.$key
     },{merge:true});
 
       return new Promise((resolve, reject) => {
@@ -156,5 +160,4 @@ export class ClientesService {
             });
         });
     }
-  
 }

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController } from 'ionic-angular';
 import { MainService } from '../../app/main.service';
 import { ClientesService } from './clientes.service';
 import { VisitasComponent } from '../visitas/visitas.component';
@@ -12,6 +12,7 @@ export class ClientesComponent {
     
 
   clientes: any;
+  distritos: any;
   municipios: any;
   provincias : any;
   model: any = {};
@@ -35,9 +36,16 @@ export class ClientesComponent {
   }
   set municipio(value: any) {
       this._municipio = value;
-      this.service.getAllClientes(this.provincia, value).then((e)=>{
-        this.clientes = e;
-      });
+      this.cargarDistritos(this.provincia.$key, value.$key);
+  }
+
+  _distrito: any;
+  get distrito(): any {
+      return this._distrito;
+  }
+  set distrito(value: any) {
+      this._distrito = value;
+      this.cargarClientes();
   }
 
   constructor(public navCtrl: NavController, private mainService: MainService,
@@ -45,6 +53,12 @@ export class ClientesComponent {
     this.cargarProvincias();
     this.loadData();
   }
+    private cargarClientes() {
+        this.service.getAllClientes(this.provincia, this.municipio, this.distrito).then((e) => {
+            this.clientes = e;
+        });
+    }
+
     cargarProvincias() {
         this.mainService.getAllDocuments("provincias").then((p)=>{
             this.provincias = p;
@@ -52,12 +66,14 @@ export class ClientesComponent {
     }
     cargarMunicipios(provincia: string) {
         this.mainService.getAllDocuments("provincias/"+provincia+"/municipios").then((p)=>{
+            /*
             var municipiosData = [];
             p.forEach(m => {
                 var obj = {$key: m.$key, nombre: m.nombre, vendedor: m.vendedor.id};
                 municipiosData.push(obj);
             });
-            this.municipios = municipiosData;
+            */
+            this.municipios = p;//municipiosData;
             var municipioEncontrado =this.municipios.find(x=> x.$key === this.usuario.ultimoMunicipio);
             if (municipioEncontrado) {
                 this.municipio = municipioEncontrado;
@@ -65,6 +81,23 @@ export class ClientesComponent {
                 this.municipio = this.municipios[0];
             }
             this.seleccionarVendedor(this.municipio.vendedor);
+        })
+    }
+    cargarDistritos(provincia: string, municipio: string) {
+        this.mainService.getAllDocuments("provincias/"+provincia+"/municipios/"+municipio+"/distritos").then((p)=>{
+            var distritosData = [];
+            p.forEach(m => {
+                var obj = {$key: m.$key, nombre: m.nombre, vendedor: m.vendedor.id};
+                distritosData.push(obj);
+            });
+            this.distritos = distritosData;
+            var distritoEncontrado =this.distritos.find(x=> x.$key === this.usuario.ultimoDistrito);
+            if (distritoEncontrado) {
+                this.distrito = distritoEncontrado;
+            } else {
+                this.distrito = this.distritos[0];
+            }
+            this.seleccionarVendedor(this.distrito.vendedor);
         })
     }
     loadData(){
@@ -84,12 +117,12 @@ export class ClientesComponent {
 
     addMessage(){
         if(!this.isEditing){
-            this.service.addCliente(this.model, this.provincia, this.municipio, this.vendedor).then(()=>{
-                this.loadData();//refresh view
+            this.service.addCliente(this.model, this.provincia, this.municipio, this.distrito, this.vendedor).then(()=>{
+                this.cargarClientes();
             });
         }else{
-            this.service.updateDocument("clientes", this.model.$key, this.model, this.provincia, this.municipio, this.vendedor).then(()=>{
-                this.loadData();//refresh view
+            this.service.updateDocument("clientes", this.model.$key, this.model, this.provincia, this.municipio, this.distrito, this.vendedor).then(()=>{
+                this.cargarClientes();
             });
         }
         this.isEditing = false;
@@ -100,6 +133,7 @@ export class ClientesComponent {
         this.model.email = '';
         this.model.telefono = '';
         this.model.usuario = '';
+        this.model.comentarios = '';
     }
     
     updateMessage(obj){
