@@ -16,6 +16,9 @@ import { SelectorVendedoresComponent } from '../components/SelectorVendedores/Se
 import { SelectorVendedoresService } from '../components/SelectorVendedores/SelectorVendedores.service';
 import { VisitasComponent } from '../pages/visitas/visitas.component';
 import { VisitasService } from '../pages/visitas/visitas.service';
+import { VentasComponent } from '../pages/ventas/ventas.component';
+import { VentasService } from '../pages/ventas/ventas.service';
+import { ProductosComponent } from '../pages/productos/productos.component';
 
 import { registerLocaleData } from '@angular/common';
 import localeEsDo from '@angular/common/locales/es-DO';
@@ -30,7 +33,9 @@ registerLocaleData(localeEsDo, localeEsDoExtra);
     LoginPage,
     VendedoresComponent,
     SelectorVendedoresComponent,
-    VisitasComponent
+    VisitasComponent,
+    VentasComponent,
+    ProductosComponent
   ],
   imports: [
     BrowserModule,
@@ -43,7 +48,9 @@ registerLocaleData(localeEsDo, localeEsDoExtra);
     LoginPage,
     VendedoresComponent,
     SelectorVendedoresComponent,
-    VisitasComponent
+    VisitasComponent,
+    VentasComponent,
+    ProductosComponent
   ],
   providers: [
     MainService,
@@ -54,7 +61,8 @@ registerLocaleData(localeEsDo, localeEsDoExtra);
     AuthProvider,
     ClientesService,
     SelectorVendedoresService,
-    VisitasService
+    VisitasService,
+    VentasService
   ]
 })
 export class AppModule {}

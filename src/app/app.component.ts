@@ -6,7 +6,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { ClientesComponent } from '../pages/clientes/clientes.component';
 import { LoginPage } from '../pages/login/login';
 import firebase from 'firebase';
-import { VisitasComponent } from '../pages/visitas/visitas.component';
+//import { ProductosComponent } from '../pages/productos/productos.component';
 
 @Component({
   templateUrl: 'app.html'
@@ -57,6 +57,8 @@ export class MyApp implements OnInit {
       { title: 'Clientes', component: ClientesComponent },
       //{ title: 'Vendedores', component: VendedoresComponent },
       //{ title: 'Visitas', component: VisitasComponent},
+      //{title: 'Ventas', component: VentasComponent},
+      //{title: 'Productos', component: ProductosComponent},
       { title: 'Login', component: LoginPage }
     ];
   }

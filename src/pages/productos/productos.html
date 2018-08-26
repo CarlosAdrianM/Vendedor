@@ -1,0 +1,36 @@
+<ion-header>
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>
+        Crear Productos
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+   
+<ion-content padding>
+    <ion-list>
+        <ion-item>
+            <ion-label floating>Nombre:</ion-label>
+            <ion-input type="text" value="" [(ngModel)]="model.nombre"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label floating>Marca:</ion-label>
+            <ion-input type="text" value="" [(ngModel)]="model.marca"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label floating>Línea:</ion-label>
+            <ion-input type="text" value="" [(ngModel)]="model.linea"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label floating>Precio Profesional:</ion-label>
+            <ion-input type="number" value="" [(ngModel)]="model.precioProfesional"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label floating>Precio Público:</ion-label>
+            <ion-input type="number" value="" [(ngModel)]="model.pvp"></ion-input>
+        </ion-item>
+        <button ion-button full (click)="crearProducto()">Crear Producto</button>
+    </ion-list>
+</ion-content>

@@ -44,7 +44,7 @@
     </ion-item>
     <ion-item *ngIf="mostrarDetalle">
       <ion-label floating>Teléfono:</ion-label>
-      <ion-input type="text" value="" [(ngModel)]="model.telefono"></ion-input>
+      <ion-input type="tel" value="" [(ngModel)]="model.telefono"></ion-input>
     </ion-item>
     <ion-item *ngIf="mostrarDetalle">
       <ion-label floating>Comentarios:</ion-label>
@@ -64,7 +64,7 @@
   <ion-list>
     <ion-item-sliding *ngFor="let cliente of clientes">
       <ion-item>
-        <h3>{{cliente.nombre}}</h3>
+        <strong>{{cliente.nombre}}</strong>
         <p>{{cliente.direccion}}</p>
         <p *ngIf="cliente.email">Email: {{cliente.email}}</p>
         <p *ngIf="cliente.comentarios">Comentarios: {{cliente.comentarios}}</p>
@@ -72,17 +72,17 @@
       <ion-item-options>
         <button ion-button color="danger" (click)="deleteMessage(cliente.$key)">
           <ion-icon name="trash"></ion-icon>
-          delete
+          borrar
         </button>
-      <button ion-button color="success" (click)="updateMessage(cliente)">
+        <button ion-button color="success" (click)="updateMessage(cliente)">
           <ion-icon name="create"></ion-icon>
-          edit
+          editar
         </button>
         <button ion-button color="secondary" (click)="crearVisita(cliente.$key)">
-            <ion-icon name="book"></ion-icon>
+          <ion-icon name="book"></ion-icon>
             visita
-          </button>
-        </ion-item-options>
+        </button>
+      </ion-item-options>
     </ion-item-sliding>
   </ion-list>
 
