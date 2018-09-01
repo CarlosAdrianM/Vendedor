@@ -13,6 +13,7 @@ export class VisitasComponent {
   model: any = {};
   isEditing: boolean = false;
   cliente: string;
+  vendedor: string;
   private hoy: Date = new Date();
   private hoySinHora: Date = new Date(this.hoy.getFullYear(), this.hoy.getMonth(), this.hoy.getDate(), 0, 0, 0, 0);
 
@@ -40,7 +41,9 @@ export class VisitasComponent {
 
   constructor(public navCtrl: NavController, navParams: NavParams, private service: VisitasService) {
     this.cliente = navParams.get("cliente");
+    this.vendedor = navParams.get("vendedor");
     this.model.cliente = this.cliente;
+    this.model.vendedor = this.vendedor;
     this.model.fecha = this.hoySinHora;
     this.model.nivelInteres = "0";
     this.loadData();
@@ -58,7 +61,7 @@ export class VisitasComponent {
         if(!this.isEditing){
             this.service.addVisita(this.model).then(()=>{
                 if (this.model.nivelInteres == "4") {
-                    this.navCtrl.push(VentasComponent, {cliente: this.cliente});
+                    this.navCtrl.push(VentasComponent, {cliente: this.cliente, vendedor: this.vendedor});
                 };
                 this.loadData();//refresh view
             });

@@ -1,0 +1,67 @@
+<ion-header>
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>
+        Cobros
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-list>
+        <ion-item *ngIf="model.aplicarAuto">
+            <ion-label>Importe Cobrado</ion-label>
+            <ion-input [(ngModel)]="importeCobrado" (ionFocus)="seleccionarTexto($event)"></ion-input>
+        </ion-item>
+        <ion-item *ngIf="!model.aplicarAuto && model.deudasCobradas && model.deudasCobradas.length > 0">
+            <ion-label>Deudas Pendientes</ion-label>
+            <ion-select multiple="true" [(ngModel)]="model.deudasCobradas">
+                <ion-option *ngFor="let deuda of deudas" value="{{deuda.$key}}" checked="true">{{deuda.fecha.toDate() | date:datelocale}} - {{deuda.importeDeuda | currency:'DOP'}}</ion-option>
+            </ion-select>
+        </ion-item>
+        <ion-toggle [(ngModel)]="model.aplicarAuto">Aplicar importe automáticamente</ion-toggle>
+        <ion-item *ngIf="model.deudasCobradas && model.deudasCobradas.length > 0">
+            <ion-label stacked>Comentarios:</ion-label>
+            <ion-textarea [(ngModel)]="model.comentarios"></ion-textarea>
+        </ion-item>
+        <ion-item *ngIf="!model.deudasCobradas">
+            <ion-label>Cargando deudas...</ion-label>
+        </ion-item>
+        <ion-item *ngIf="model.deudasCobradas && model.deudasCobradas.length == 0">
+            <ion-label>Este cliente no debe nada</ion-label>
+        </ion-item>
+    
+
+        <ion-item>
+            <button type="button" (click)="addCobro()" ion-button full>Cobrar</button>
+        </ion-item>
+    </ion-list>
+
+    <ion-card>
+        <ion-card-header>
+            Opciones moviendo a izquierda
+        </ion-card-header>
+    </ion-card>
+    <ion-list>
+        <ion-item-sliding *ngFor="let cobro of cobros">
+            <ion-item>
+                <p>Fecha: {{cobro.fecha.toDate() | date:locale}}</p>
+                <h3>Importe: {{cobro.importe}}</h3>
+                <p *ngIf="cobro.comentarios">{{cobro.comentarios}}</p>
+            </ion-item>
+            <ion-item-options>
+                <button ion-button color="danger" (click)="deleteCobro(cobro.$key)">
+                    <ion-icon name="trash"></ion-icon>
+                    delete
+                </button>
+                <button ion-button color="success" (click)="updateCobro(cobro)">
+                    <ion-icon name="create"></ion-icon>
+                    edit
+                </button>
+            </ion-item-options>
+        </ion-item-sliding>
+    </ion-list>
+  
+</ion-content>

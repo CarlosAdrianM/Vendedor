@@ -61,26 +61,26 @@ export class VentasService {
     
     dataObj.usuario = firebase.auth().currentUser.uid;
     dataObj.fechaCreacion = firebase.firestore.Timestamp.now();
-    var ventaId = dataObj.fechaCreacion.toString();
+    dataObj.importeDeuda = dataObj.total;
 
     return new Promise((resolve, reject) => {
         var batch = this.db.batch();
-        var ventaRef = this.db.collection("ventas").doc(ventaId);
+        var ventaRef = this.db.collection("ventas").doc();
         batch.set(ventaRef, dataObj);
         lineas.forEach(l => {
             l.precio = +l.precio;
             l.cantidad = +l.cantidad;
-            var lineaRef = this.db.collection("ventas").doc(ventaId).collection("lineas").doc();
+            var lineaRef = this.db.collection("ventas").doc(ventaRef.id).collection("lineas").doc();
             batch.set(lineaRef, l);
         });
         batch.commit()
-          .then((obj: any) => {
-              resolve(obj);
-          })
-          .catch((error: any) => {
-              reject(error);
-          });
-      });
+        .then((obj: any) => {
+            resolve(obj);
+        })
+        .catch((error: any) => {
+            reject(error);
+        });
+    });
   }
  
   getUsuario(): Promise<any> {

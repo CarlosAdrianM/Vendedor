@@ -3,6 +3,7 @@ import { NavController } from 'ionic-angular';
 import { MainService } from '../../app/main.service';
 import { ClientesService } from './clientes.service';
 import { VisitasComponent } from '../visitas/visitas.component';
+import { CobrosComponent } from '../cobros/cobros.component';
 
 @Component({
   selector: 'clientes',
@@ -158,6 +159,10 @@ export class ClientesComponent {
     }
 
     crearVisita(cliente: string) {
-        this.navCtrl.push(VisitasComponent, { cliente: cliente });
+        this.navCtrl.push(VisitasComponent, { cliente: cliente, vendedor: this.vendedor });
+    }
+
+    crearCobro(cliente: string) {
+        this.navCtrl.push(CobrosComponent, { cliente: cliente, vendedor: this.vendedor });
     }
 }

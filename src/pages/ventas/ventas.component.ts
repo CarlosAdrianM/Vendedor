@@ -12,6 +12,7 @@ export class VentasComponent {
   model: any = {};
   isEditing: boolean = false;
   cliente: string;
+  vendedor: string;
   linea: any;
   lineas: any;
   private hoy: Date = new Date();
@@ -29,8 +30,10 @@ export class VentasComponent {
 
   constructor(public navCtrl: NavController, navParams: NavParams, private service: VentasService) {
     this.cliente = navParams.get("cliente");
+    this.vendedor = navParams.get("vendedor");
     this.getProductos();
     this.model.cliente = this.cliente;
+    this.model.vendedor = this.vendedor;
     this.model.fecha = this.hoySinHora;
     this.lineas = [];
   }
