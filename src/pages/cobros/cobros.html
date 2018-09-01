@@ -13,7 +13,7 @@
     <ion-list>
         <ion-item *ngIf="model.aplicarAuto">
             <ion-label>Importe Cobrado</ion-label>
-            <ion-input [(ngModel)]="importeCobrado" (ionFocus)="seleccionarTexto($event)"></ion-input>
+            <ion-input [(ngModel)]="model.importeCobrado" (ionFocus)="seleccionarTexto($event)"></ion-input>
         </ion-item>
         <ion-item *ngIf="!model.aplicarAuto && model.deudasCobradas && model.deudasCobradas.length > 0">
             <ion-label>Deudas Pendientes</ion-label>
@@ -21,7 +21,7 @@
                 <ion-option *ngFor="let deuda of deudas" value="{{deuda.$key}}" checked="true">{{deuda.fecha.toDate() | date:datelocale}} - {{deuda.importeDeuda | currency:'DOP'}}</ion-option>
             </ion-select>
         </ion-item>
-        <ion-toggle [(ngModel)]="model.aplicarAuto">Aplicar importe automáticamente</ion-toggle>
+        <ion-toggle *ngIf="model.deudasCobradas && model.deudasCobradas.length > 0" [(ngModel)]="model.aplicarAuto">Aplicar importe automáticamente</ion-toggle>
         <ion-item *ngIf="model.deudasCobradas && model.deudasCobradas.length > 0">
             <ion-label stacked>Comentarios:</ion-label>
             <ion-textarea [(ngModel)]="model.comentarios"></ion-textarea>
@@ -52,14 +52,7 @@
                 <p *ngIf="cobro.comentarios">{{cobro.comentarios}}</p>
             </ion-item>
             <ion-item-options>
-                <button ion-button color="danger" (click)="deleteCobro(cobro.$key)">
-                    <ion-icon name="trash"></ion-icon>
-                    delete
-                </button>
-                <button ion-button color="success" (click)="updateCobro(cobro)">
-                    <ion-icon name="create"></ion-icon>
-                    edit
-                </button>
+
             </ion-item-options>
         </ion-item-sliding>
     </ion-list>

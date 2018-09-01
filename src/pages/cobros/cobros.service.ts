@@ -57,12 +57,20 @@ export class CobrosService {
                 dataObj.deudasCobradas.forEach(d => {
                     var ventaRef = this.db.collection("ventas").doc(d);
                     ventaRef.get().then(v => {
-                        sumaImporte += v.data().importeDeuda;
+                        var restaPorCobrar = dataObj.importeCobrado ?
+                            (dataObj.importeCobrado - sumaImporte - v.data().importeDeuda) : 0;
+                        if (restaPorCobrar >= 0) {
+                            sumaImporte += v.data().importeDeuda;
+                        } else {
+                            sumaImporte = dataObj.importeCobrado;
+                        }
+                        
                         var nuevoVentaCobro = ventaRef.collection("cobros").doc();
-                        tr.set(nuevoVentaCobro,{fecha:dataObj.fechaCreacion, importe: v.data().importeDeuda});
-                        tr.update(ventaRef, {"importeDeuda": 0});
+                        tr.set(nuevoVentaCobro,{fecha:dataObj.fechaCreacion, importe: restaPorCobrar >= 0 ? 
+                            v.data().importeDeuda : v.data().importeDeuda - restaPorCobrar});
+                        tr.update(ventaRef, {"importeDeuda": restaPorCobrar >= 0 ? 0 : -restaPorCobrar});
                         counter--;
-                        if (counter === 0) { // para que solo entre cuando estén los get hechos
+                        if (counter === 0 || (dataObj.importeCobrado && sumaImporte >= dataObj.importeCobrado)) { // para que solo entre cuando estén los get hechos
                             return this.finalizarCobro(dataObj, sumaImporte, tr, resolve, reject);
                         }
                     });                
@@ -109,6 +117,17 @@ export class CobrosService {
                 arr.push(obj);
             });
 
+            arr = arr.sort((obj1, obj2) => {
+                if (obj1.fecha > obj2.fecha) {
+                    return 1;
+                }
+            
+                if (obj1.fecha < obj2.fecha) {
+                    return -1;
+                }
+            
+                return 0;
+            });
                 
                 if (arr.length > 0) {
                     console.log("Document data:", arr);

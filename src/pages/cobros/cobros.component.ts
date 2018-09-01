@@ -11,7 +11,6 @@ export class CobrosComponent {
   cobros: any;
   model: any = {};
   deudas: any = {};
-  importeCobrado: number = 0;
   cliente: string;
   vendedor: string;
   private hoy: Date = new Date();
@@ -48,7 +47,6 @@ export class CobrosComponent {
     addCobro(){
         this.service.addCobro(this.model).then(()=>{
             this.navCtrl.pop();
-            //this.loadData();//refresh view
         });
     }
 
