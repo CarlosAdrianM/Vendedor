@@ -27,7 +27,7 @@
         </ion-item>
 
         <ion-item>
-            <button type="button" (click)="addVisita()" ion-button full>Guardar</button>
+            <button type="button" [disabled]="!botonActivo" (click)="addVisita()" ion-button full>Guardar</button>
         </ion-item>
     </ion-list>
 

@@ -52,7 +52,7 @@
     </ion-item>
         
     <ion-item *ngIf="mostrarDetalle">
-        <button type="button" (click)="addMessage()" ion-button full>Guardar</button>
+        <button type="button" [disabled]="!botonActivo" (click)="addMessage()" ion-button full>Guardar</button>
     </ion-item>
 </ion-list>
  
@@ -68,6 +68,7 @@
         <p>{{cliente.direccion}}</p>
         <p *ngIf="cliente.email">Email: {{cliente.email}}</p>
         <p *ngIf="cliente.comentarios">Comentarios: {{cliente.comentarios}}</p>
+        <p *ngIf="cliente.ultimaVisita">Última Visita: {{cliente.ultimaVisita.toDate() | date:datelocale}}</p>
       </ion-item>
       <ion-item-options>
         <button ion-button color="danger" (click)="deleteMessage(cliente.$key)">

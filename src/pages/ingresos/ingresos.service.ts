@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import * as firebase from 'firebase';
 
 @Injectable()
-export class CobrosService {
+export class IngresosService {
 
     private db: any;
 
@@ -10,11 +10,11 @@ export class CobrosService {
     this.db = firebase.firestore();
   }
 
-  getCobrosCliente(cliente: string): Promise<any> {
+  getIngresosVendedor(vendedor: any): Promise<any> {
       //var refCliente = this.db.collection("clientes").doc(cliente);
   return new Promise((resolve, reject) => {
-      this.db.collection("cobros")
-        .where('cliente', '==', cliente)
+      this.db.collection("ingresos")
+        .where('vendedor', '==', vendedor)
         .get()
         .then((querySnapshot) => {
             let arr = [];
@@ -45,66 +45,51 @@ export class CobrosService {
 
 
   
-    addCobro(dataObj: any): Promise<any> {
+    addIngreso(dataObj: any): Promise<any> {
         
         dataObj.usuario = firebase.auth().currentUser.uid;
         dataObj.fechaCreacion = firebase.firestore.Timestamp.now();
         var sumaImporte = 0;
-        var counter = dataObj.deudasCobradas.length;
+        var counter = dataObj.cobrosIngresados.length;
 
         return this.db.runTransaction(tr => {
             return new Promise((resolve, reject) => {
-                dataObj.deudasCobradas.forEach(d => {
-                    var ventaRef = this.db.collection("ventas").doc(d);
-                    ventaRef.get().then(v => {
-                        var restaPorCobrar = dataObj.importeCobrado ?
-                            (dataObj.importeCobrado - sumaImporte - v.data().importeDeuda) : 0;
-                        if (restaPorCobrar >= 0) {
-                            sumaImporte += v.data().importeDeuda;
-                        } else {
-                            sumaImporte = dataObj.importeCobrado;
-                        }
-                        
-                        var nuevoVentaCobro = ventaRef.collection("cobros").doc();
-                        tr.set(nuevoVentaCobro,{fecha:dataObj.fechaCreacion, importe: restaPorCobrar >= 0 ? 
-                            v.data().importeDeuda : v.data().importeDeuda - restaPorCobrar});
-                        tr.update(ventaRef, {"importeDeuda": restaPorCobrar >= 0 ? 0 : -restaPorCobrar});
-                        counter--;
-                        if (counter === 0 || (dataObj.importeCobrado && sumaImporte >= dataObj.importeCobrado)) { // para que solo entre cuando estén los get hechos
-                            return this.finalizarCobro(dataObj, sumaImporte, tr, resolve, reject);
-                        }
-                    });                
-                })
+
+                    var usuarioRef = this.db.collection("usuarios").doc(dataObj.usuario);
+                    usuarioRef.get().then(u => {
+                        var vendedorRef = u.data().vendedor;
+                        dataObj.vendedor = vendedorRef;
+                        vendedorRef.get().then(v =>{
+                            dataObj.cobrosIngresados.forEach(d => {
+                                var cobroVendedorRef = vendedorRef.collection("cobrosPendientesIngreso").doc(d);
+                                cobroVendedorRef.get().then(v => {
+                                    sumaImporte += v.data().importe;
+                                    tr.delete(cobroVendedorRef);
+                                    counter--;
+                                    if (counter === 0) { // para que solo entre cuando estén los get hechos
+                                        dataObj.importe = sumaImporte;
+                                        var ingresoRef = this.db.collection("ingresos").doc();
+                                        tr.set(ingresoRef, dataObj);
+                                        resolve(v);
+                                    }
+                                });
+                            }) 
+                        }).catch((error: any) => {
+                            reject(error);
+                        });
+                    });            
+
             });
         }).then(function() {
-            console.log("Registro de cobro completado con éxito");
+            console.log("Registro de ingreso completado con éxito");
         }).catch(function(error) {
-            console.log("Error al registrar el cobro: ", error);
+            console.log("Error al registrar el ingreso: ", error);
         });
     }
 
-    private finalizarCobro(dataObj: any, sumaImporte: number, tr: any, resolve: any, reject: any): any {
-        dataObj.importe = sumaImporte;
-        var cobroRef = this.db.collection("cobros").doc();
-        tr.set(cobroRef, dataObj);
-        var usuarioRef = this.db.collection("usuarios").doc(dataObj.usuario);
-        usuarioRef.get().then(u => {
-            var vendedorRef = u.data().vendedor;
-            vendedorRef.get().then(v =>{
-                var cobroVendedorRef = vendedorRef.collection("cobrosPendientesIngreso").doc(cobroRef.id);
-                tr.set(cobroVendedorRef, {cobro: cobroRef, importe: +sumaImporte, fecha: dataObj.fechaCreacion});
-                resolve(v);
-            }).catch((error: any) => {
-                reject(error);
-            });
-        });
-    }
-
-  getDeudasCliente(cliente: string): Promise<any> {
+  getCobrosPendientes(vendedor: any): Promise<any> {
     return new Promise((resolve, reject) => {
-        this.db.collection("ventas")
-        .where('cliente', '==', cliente)
-        .where('importeDeuda','>',0)
+        vendedor.collection("cobrosPendientesIngreso")
         .get()
         .then((querySnapshot) => {
             let arr = [];

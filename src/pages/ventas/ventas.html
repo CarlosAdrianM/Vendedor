@@ -13,24 +13,27 @@
     <ion-grid>
         <ion-row>
             <ion-col col-6>Producto</ion-col>
-            <ion-col col-3>Cantidad</ion-col>
+            <ion-col col-2>Cant.</ion-col>
             <ion-col col-3>Precio</ion-col>
+            <ion-col col-1></ion-col>
         </ion-row>
         <ion-row *ngFor="let linea of lineas">
-            <ion-col col-7>
-                <ion-select [(ngModel)]="linea.producto">
-                    <ion-option *ngFor="let producto of productos" (ionSelect)="seleccionarProducto($event, producto)" value="{{producto.$key}}">{{producto.nombre}}</ion-option>
+            <ion-col col-6>
+                <ion-select class="full-width" [(ngModel)]="linea.producto">
+                    <ion-option *ngFor="let producto of productos" (ionSelect)="seleccionarProducto(linea, producto)" value="{{producto.$key}}">{{producto.nombre}}</ion-option>
                 </ion-select>
             </ion-col>
             <ion-col col-2><ion-input type="number" [(ngModel)]="linea.cantidad"></ion-input></ion-col>
             <ion-col col-3><ion-input type="text" [(ngModel)]="linea.precio"></ion-input></ion-col>
+            <ion-col col-1><button ion-button icon-only round outline small (click)="borrarLinea(linea)"><ion-icon name="trash"></ion-icon></button></ion-col>
         </ion-row>
     </ion-grid>
     <button ion-button full (click)="addLinea()">Añadir Línea</button>
-    <ion-card>
-        <ion-card-header>
-            Total: {{ total | currency:'DOP' }}
-        </ion-card-header>
-    </ion-card>
+    <ion-list>
+        <ion-item>
+            <ion-label>Total</ion-label>
+            <p item-right><strong>{{ total | currency:'DOP' }}</strong></p>
+        </ion-item>
+    </ion-list>
     <button ion-button full (click)="addVenta()">Guardar Venta</button>
 </ion-content>

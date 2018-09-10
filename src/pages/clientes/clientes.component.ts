@@ -21,6 +21,7 @@ export class ClientesComponent {
   mostrarDetalle: boolean = false;
   vendedor: string;
   usuario: any;
+  botonActivo: boolean = true;
 
   _provincia: any;
   get provincia(): any {
@@ -54,6 +55,13 @@ export class ClientesComponent {
     this.cargarProvincias();
     this.loadData();
   }
+
+  ionViewDidEnter() {
+    if (this.distrito) {
+        this.cargarClientes();        
+    }
+  }
+
     private cargarClientes() {
         this.service.getAllClientes(this.provincia, this.municipio, this.distrito).then((e) => {
             this.clientes = e;
@@ -117,13 +125,16 @@ export class ClientesComponent {
     
 
     addMessage(){
+        this.botonActivo = false;
         if(!this.isEditing){
             this.service.addCliente(this.model, this.provincia, this.municipio, this.distrito, this.vendedor).then(()=>{
                 this.cargarClientes();
+                this.botonActivo = true;
             });
         }else{
             this.service.updateDocument("clientes", this.model.$key, this.model, this.provincia, this.municipio, this.distrito, this.vendedor).then(()=>{
                 this.cargarClientes();
+                this.botonActivo = true;
             });
         }
         this.isEditing = false;

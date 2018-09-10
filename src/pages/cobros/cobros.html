@@ -21,7 +21,10 @@
                 <ion-option *ngFor="let deuda of deudas" value="{{deuda.$key}}" checked="true">{{deuda.fecha.toDate() | date:datelocale}} - {{deuda.importeDeuda | currency:'DOP'}}</ion-option>
             </ion-select>
         </ion-item>
-        <ion-toggle *ngIf="model.deudasCobradas && model.deudasCobradas.length > 0" [(ngModel)]="model.aplicarAuto">Aplicar importe automáticamente</ion-toggle>
+        <ion-item>
+            <ion-label>Cobrar importe fijo</ion-label>
+            <ion-toggle *ngIf="model.deudasCobradas && model.deudasCobradas.length > 0" [(ngModel)]="model.aplicarAuto"></ion-toggle>
+        </ion-item>
         <ion-item *ngIf="model.deudasCobradas && model.deudasCobradas.length > 0">
             <ion-label stacked>Comentarios:</ion-label>
             <ion-textarea [(ngModel)]="model.comentarios"></ion-textarea>

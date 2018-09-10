@@ -18,13 +18,15 @@ import { VisitasComponent } from '../pages/visitas/visitas.component';
 import { VisitasService } from '../pages/visitas/visitas.service';
 import { VentasComponent } from '../pages/ventas/ventas.component';
 import { VentasService } from '../pages/ventas/ventas.service';
-import { ProductosComponent } from '../pages/productos/productos.component';
+//import { ProductosComponent } from '../pages/productos/productos.component';
 
 import { registerLocaleData } from '@angular/common';
 import localeEsDo from '@angular/common/locales/es-DO';
 import localeEsDoExtra from '@angular/common/locales/extra/es-DO';
 import { CobrosComponent } from '../pages/cobros/cobros.component';
 import { CobrosService } from '../pages/cobros/cobros.service';
+import { IngresosComponent } from '../pages/ingresos/ingresos.component';
+import { IngresosService } from '../pages/ingresos/ingresos.service';
 
 registerLocaleData(localeEsDo, localeEsDoExtra);
 
@@ -37,8 +39,9 @@ registerLocaleData(localeEsDo, localeEsDoExtra);
     SelectorVendedoresComponent,
     VisitasComponent,
     VentasComponent,
-    ProductosComponent,
-    CobrosComponent
+  //  ProductosComponent,
+    CobrosComponent,
+    IngresosComponent
   ],
   imports: [
     BrowserModule,
@@ -53,8 +56,9 @@ registerLocaleData(localeEsDo, localeEsDoExtra);
     SelectorVendedoresComponent,
     VisitasComponent,
     VentasComponent,
-    ProductosComponent,
-    CobrosComponent
+//    ProductosComponent,
+    CobrosComponent,
+    IngresosComponent
   ],
   providers: [
     MainService,
@@ -67,7 +71,8 @@ registerLocaleData(localeEsDo, localeEsDoExtra);
     SelectorVendedoresService,
     VisitasService,
     VentasService,
-    CobrosService
+    CobrosService,
+    IngresosService
   ]
 })
 export class AppModule {}

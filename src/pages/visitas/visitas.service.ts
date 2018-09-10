@@ -59,7 +59,8 @@ export class VisitasService {
       });
   }
 
-  addVisita(dataObj: any): Promise<any> {
+  /*
+  addVisita_old(dataObj: any): Promise<any> {
     
     dataObj.usuario = firebase.auth().currentUser.uid;
     dataObj.fechaCreacion = firebase.firestore.Timestamp.now();
@@ -74,6 +75,32 @@ export class VisitasService {
           });
       });
   }
+  */
+
+  
+  addVisita(dataObj: any): Promise<any> {
+    
+    dataObj.usuario = firebase.auth().currentUser.uid;
+    dataObj.fechaCreacion = firebase.firestore.Timestamp.now();
+    
+    return new Promise((resolve, reject) => {
+        var batch = this.db.batch();
+        var visitaRef = this.db.collection("visitas").doc();
+        var clienteRef = this.db.collection("clientes").doc(dataObj.cliente);
+        clienteRef.get().then((c)=>{
+            batch.set(clienteRef, {ultimaVisita: dataObj.fechaCreacion},{merge:true});
+            batch.set(visitaRef, dataObj);
+            batch.commit()
+            .then((obj: any) => {
+                resolve(obj);
+            })
+            .catch((error: any) => {
+                reject(error);
+            });    
+        });
+    });
+  }
+ 
 
   setDocument(collectionName: string, dataObj: any, docID: string): Promise<any> {
     dataObj.usuario = firebase.auth().currentUser.uid;

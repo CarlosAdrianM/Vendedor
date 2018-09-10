@@ -8,6 +8,8 @@ import { VentasService } from './ventas.service';
 })
 export class VentasComponent {
 
+  INCREMENTO_IMPUESTO: number = 1.18;
+
   productos: any;
   model: any = {};
   isEditing: boolean = false;
@@ -46,8 +48,15 @@ export class VentasComponent {
     }
 
     addLinea() {
-        this.linea = {producto:this.productos[0].$key, cantidad:1, precio: this.productos[0].precioProfesional};
+        this.linea = {producto:this.productos[0].$key, cantidad:1, precio: this.productos[0].precioProfesional / this.INCREMENTO_IMPUESTO};
         this.lineas.push(this.linea);
+    }
+
+    borrarLinea(linea: any) {
+      var index = this.lineas.indexOf(linea);
+      if (index > -1) {
+        this.lineas.splice(index, 1);
+      }
     }
 
     getProductos() {
@@ -57,7 +66,10 @@ export class VentasComponent {
       });
     }
 
-    seleccionarProducto(event, producto) {
-      this.linea.precio = producto.precioProfesional;
+    seleccionarProducto(linea: any, producto: any) {
+      var index = this.lineas.indexOf(linea);
+      if (index > -1) {
+        this.lineas[index].precio = producto.precioProfesional / this.INCREMENTO_IMPUESTO;
+      }
     }
 }

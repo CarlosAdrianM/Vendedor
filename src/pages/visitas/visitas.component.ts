@@ -14,6 +14,7 @@ export class VisitasComponent {
   isEditing: boolean = false;
   cliente: string;
   vendedor: string;
+  botonActivo: boolean = true;
   private hoy: Date = new Date();
   private hoySinHora: Date = new Date(this.hoy.getFullYear(), this.hoy.getMonth(), this.hoy.getDate(), 0, 0, 0, 0);
 
@@ -58,16 +59,19 @@ export class VisitasComponent {
     }
         
     addVisita(){
+        this.botonActivo = false;
         if(!this.isEditing){
             this.service.addVisita(this.model).then(()=>{
+                this.navCtrl.pop();
                 if (this.model.nivelInteres == "4") {
                     this.navCtrl.push(VentasComponent, {cliente: this.cliente, vendedor: this.vendedor});
+                    this.botonActivo = true;
                 };
-                this.loadData();//refresh view
             });
         }else{
             this.service.updateDocument(this.model.$key, this.model).then(()=>{
                 this.loadData();//refresh view
+                this.botonActivo = true;
             });
         }
         this.isEditing = false;

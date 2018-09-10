@@ -1,0 +1,64 @@
+<ion-header>
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>
+        Ingresos
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-list>
+        <ion-item *ngIf="cobros && cobros.length > 0">
+            <ion-label>Cobros a Ingresar</ion-label>
+            <ion-select multiple="true" [(ngModel)]="model.cobrosIngresados">
+                <ion-option *ngFor="let cobro of cobros" value="{{cobro.$key}}" checked="true">{{cobro.fecha.toDate() | date:datelocale}} - {{cobro.importe | currency:'DOP'}}</ion-option>
+            </ion-select>
+        </ion-item>
+        <ion-toggle *ngIf="model.deudasCobradas && model.deudasCobradas.length > 0" [(ngModel)]="model.aplicarAuto">Aplicar importe automáticamente</ion-toggle>
+        <ion-item *ngIf="cobros && cobros.length > 0">
+            <ion-label stacked>Comentarios:</ion-label>
+            <ion-textarea [(ngModel)]="model.comentarios"></ion-textarea>
+        </ion-item>
+        <ion-item *ngIf="!cobros">
+            <ion-label>Cargando cobros...</ion-label>
+        </ion-item>
+        <ion-item *ngIf="cobros && cobros.length == 0">
+            <ion-label>Actualmente no tienes cobros para ingresar</ion-label>
+        </ion-item>
+        <ion-list>
+            <ion-item>
+                <ion-label>Total</ion-label>
+                <p item-right><strong>{{ totalCobros | currency:'DOP' }}</strong></p>
+            </ion-item>
+        </ion-list>
+            
+        <ion-item>
+            <ion-label>Meter gastos</ion-label>
+        </ion-item>
+
+        <ion-item>
+            <button type="button" (click)="addIngreso()" ion-button full>Ingresar</button>
+        </ion-item>
+    </ion-list>
+
+    <ion-card>
+        <ion-card-header>
+            Opciones moviendo a izquierda
+        </ion-card-header>
+    </ion-card>
+    <ion-list>
+        <ion-item-sliding *ngFor="let ingreso of ingresos">
+            <ion-item>
+                <p>Fecha: {{ingreso.fecha.toDate() | date:locale}}</p>
+                <h3>Importe: {{ingreso.importe}}</h3>
+                <p *ngIf="ingreso.comentarios">{{ingreso.comentarios}}</p>
+            </ion-item>
+            <ion-item-options>
+
+            </ion-item-options>
+        </ion-item-sliding>
+    </ion-list>
+</ion-content>

@@ -29,6 +29,18 @@ export class ClientesService {
                 arr.push(obj);
             });
 
+            arr = arr.sort((obj1, obj2) => {
+                if (obj1.ultimaVisita > obj2.ultimaVisita) {
+                    return 1;
+                }
+            
+                if (obj1.ultimaVisita < obj2.ultimaVisita) {
+                    return -1;
+                }
+            
+                return 0;
+            });
+
               
               if (arr.length > 0) {
                   console.log("Document data:", arr);
