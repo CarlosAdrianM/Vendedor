@@ -7,6 +7,7 @@ import { ClientesComponent } from '../pages/clientes/clientes.component';
 import { LoginPage } from '../pages/login/login';
 import firebase from 'firebase';
 import { IngresosComponent } from '../pages/ingresos/ingresos.component';
+import { CobrosComponent } from '../pages/cobros/cobros.component';
 
 @Component({
   templateUrl: 'app.html'
@@ -59,6 +60,7 @@ export class MyApp implements OnInit {
       //{ title: 'Visitas', component: VisitasComponent},
       //{title: 'Ventas', component: VentasComponent},
       //{ title: 'Productos', component: ProductosComponent },
+      { title: 'Deudas', component: CobrosComponent},
       { title: 'Ingresos', component: IngresosComponent },
       { title: 'Login', component: LoginPage }
     ];

@@ -13,6 +13,7 @@ export class ClientesComponent {
     
 
   clientes: any;
+  clientesSinFiltrar: any;
   distritos: any;
   municipios: any;
   provincias : any;
@@ -65,6 +66,7 @@ export class ClientesComponent {
     private cargarClientes() {
         this.service.getAllClientes(this.provincia, this.municipio, this.distrito).then((e) => {
             this.clientes = e;
+            this.clientesSinFiltrar = e;
         });
     }
 
@@ -175,5 +177,42 @@ export class ClientesComponent {
 
     crearCobro(cliente: string) {
         this.navCtrl.push(CobrosComponent, { cliente: cliente, vendedor: this.vendedor });
+    }
+
+    seleccionarTexto(evento: any): void {
+        if (evento == null || ((evento._searchbarInput == null || evento._searchbarInput.nativeElement == null) && evento.target == null)) {
+            return;
+        }
+        setTimeout(() => {
+            evento._searchbarInput && evento._searchbarInput.nativeElement ? evento._searchbarInput.nativeElement.select() : evento.target.select();
+        }, 0);
+    }
+
+    filtrarBusqueda(searchbar: any): void {
+        let filtro: string;
+        if (searchbar.target.value) {
+            filtro = searchbar.target.value.toUpperCase();
+        } else {
+            filtro = "";
+        }
+
+        if (this.clientes) {
+            this.clientes = this.aplicarFiltro(this.clientesSinFiltrar, filtro);
+        }
+    }
+
+    aplicarFiltro(datos: any[], filtro: string): any[] {
+        return datos.filter(
+            f => Object.keys(f).some(
+                (key) => (f[key] && (typeof f[key] === 'string' || f[key] instanceof String)) ?
+                    f[key].toUpperCase().indexOf(filtro) > -1 :
+                    (f[key] && typeof f[key] === 'number' && !isNaN(parseFloat(filtro))) ? f[key] === parseFloat(filtro) :
+                    false
+            )
+        );
+    }
+
+    resetearFiltros(): void {
+        this.clientes = this.clientesSinFiltrar;
     }
 }

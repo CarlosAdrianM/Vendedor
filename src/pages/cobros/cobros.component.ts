@@ -13,18 +13,30 @@ export class CobrosComponent {
   deudas: any = {};
   cliente: string;
   vendedor: string;
+  botonActivo: boolean = true;
   private hoy: Date = new Date();
   private hoySinHora: Date = new Date(this.hoy.getFullYear(), this.hoy.getMonth(), this.hoy.getDate(), 0, 0, 0, 0);
 
   constructor(public navCtrl: NavController, navParams: NavParams, private service: CobrosService) {
     this.cliente = navParams.get("cliente");
     this.vendedor = navParams.get("vendedor");
+
     this.model.cliente = this.cliente;
-    this.model.vendedor = this.vendedor;
     this.model.fecha = this.hoySinHora;
     this.model.aplicarAuto = false;
+
+    if (!this.vendedor) {
+        this.service.getUsuario().then((u)=>{
+            this.vendedor=u.vendedor.id;
+            this.model.vendedor = this.vendedor;
+            this.loadData();
+        })
+    } else {
+        this.model.vendedor = this.vendedor;
+        this.loadData();
+    }
     
-    this.loadData();
+    
   }
 
     loadData(){
@@ -32,7 +44,7 @@ export class CobrosComponent {
         this.service.getCobrosCliente(this.cliente).then((e)=>{
             this.cobros = e;
         });
-        this.service.getDeudasCliente(this.cliente).then((d)=> {
+        this.service.getDeudasCliente(this.cliente, this.vendedor).then((d)=> {
             this.deudas = d;
             this.model.deudasCobradas = [];
             if (!d) {
@@ -45,6 +57,7 @@ export class CobrosComponent {
     }
         
     addCobro(){
+        this.botonActivo = false;
         this.service.addCobro(this.model).then(()=>{
             this.navCtrl.pop();
         });

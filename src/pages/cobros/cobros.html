@@ -10,7 +10,7 @@
 </ion-header>
 
 <ion-content padding>
-    <ion-list>
+    <ion-list *ngIf="model.cliente">
         <ion-item *ngIf="model.aplicarAuto">
             <ion-label>Importe Cobrado</ion-label>
             <ion-input [(ngModel)]="model.importeCobrado" (ionFocus)="seleccionarTexto($event)"></ion-input>
@@ -21,9 +21,9 @@
                 <ion-option *ngFor="let deuda of deudas" value="{{deuda.$key}}" checked="true">{{deuda.fecha.toDate() | date:datelocale}} - {{deuda.importeDeuda | currency:'DOP'}}</ion-option>
             </ion-select>
         </ion-item>
-        <ion-item>
+        <ion-item *ngIf="model.deudasCobradas && model.deudasCobradas.length > 0">
             <ion-label>Cobrar importe fijo</ion-label>
-            <ion-toggle *ngIf="model.deudasCobradas && model.deudasCobradas.length > 0" [(ngModel)]="model.aplicarAuto"></ion-toggle>
+            <ion-toggle [(ngModel)]="model.aplicarAuto"></ion-toggle>
         </ion-item>
         <ion-item *ngIf="model.deudasCobradas && model.deudasCobradas.length > 0">
             <ion-label stacked>Comentarios:</ion-label>
@@ -38,16 +38,24 @@
     
 
         <ion-item>
-            <button type="button" (click)="addCobro()" ion-button full>Cobrar</button>
+            <button type="button" [disabled]="!botonActivo" (click)="addCobro()" ion-button full>Cobrar</button>
         </ion-item>
     </ion-list>
 
-    <ion-card>
-        <ion-card-header>
-            Opciones moviendo a izquierda
-        </ion-card-header>
-    </ion-card>
-    <ion-list>
+    <ion-list *ngIf="!model.cliente && model.deudasCobradas && model.deudasCobradas.length > 0">
+        <ion-item *ngFor="let deuda of deudas">
+            <p>Cliente: {{deuda.clienteNombre}}</p>
+            <p>Dirección: {{deuda.clienteDireccion}}</p>
+            <p>Fecha: {{deuda.fecha.toDate() | date:locale}}</p>
+            <p>Importe Pendiente: {{deuda.importeDeuda | currency:'DOP'}}</p>
+        </ion-item>
+    </ion-list>
+
+    <ion-item *ngIf="!deudas && !model.cliente">
+        <ion-label>No hay ninguna deuda</ion-label>
+    </ion-item>
+
+    <ion-list *ngIf="model.cliente">
         <ion-item-sliding *ngFor="let cobro of cobros">
             <ion-item>
                 <p>Fecha: {{cobro.fecha.toDate() | date:locale}}</p>

@@ -56,12 +56,9 @@
     </ion-item>
 </ion-list>
  
-  <ion-card>
-    <ion-card-header>
-      Opciones desplazando a la izquierda
-    </ion-card-header>
-  </ion-card>
   <ion-list>
+    <ion-searchbar #barra placeholder="Introduzca algún dato del cliente" (ionInput)="filtrarBusqueda($event)" (ionClear)="resetearFiltros()" (ionFocus)="seleccionarTexto($event)"></ion-searchbar>
+    
     <ion-item-sliding *ngFor="let cliente of clientes">
       <ion-item>
         <strong>{{cliente.nombre}}</strong>

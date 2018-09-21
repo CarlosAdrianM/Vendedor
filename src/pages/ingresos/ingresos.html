@@ -22,7 +22,7 @@
             <ion-label stacked>Comentarios:</ion-label>
             <ion-textarea [(ngModel)]="model.comentarios"></ion-textarea>
         </ion-item>
-        <ion-item *ngIf="!cobros">
+        <ion-item *ngIf="!cobros && !botonActivo">
             <ion-label>Cargando cobros...</ion-label>
         </ion-item>
         <ion-item *ngIf="cobros && cobros.length == 0">
@@ -36,11 +36,11 @@
         </ion-list>
             
         <ion-item>
-            <ion-label>Meter gastos</ion-label>
+            <!--ion-label>Meter gastos</ion-label-->
         </ion-item>
 
         <ion-item>
-            <button type="button" (click)="addIngreso()" ion-button full>Ingresar</button>
+            <button type="button" [disabled]="!botonActivo" (click)="addIngreso()" ion-button full>Ingresar</button>
         </ion-item>
     </ion-list>
 

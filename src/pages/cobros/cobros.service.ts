@@ -12,10 +12,12 @@ export class CobrosService {
 
   getCobrosCliente(cliente: string): Promise<any> {
       //var refCliente = this.db.collection("clientes").doc(cliente);
-  return new Promise((resolve, reject) => {
-      this.db.collection("cobros")
-        .where('cliente', '==', cliente)
-        .get()
+      var query = this.db.collection("cobros");
+      if (cliente) {
+          query = query.where('cliente', '==', cliente);
+      } 
+  return new Promise((resolve, reject) => {      
+        query.get()
         .then((querySnapshot) => {
             let arr = [];
             querySnapshot.forEach(function (doc) {
@@ -100,49 +102,74 @@ export class CobrosService {
         });
     }
 
-  getDeudasCliente(cliente: string): Promise<any> {
+  getDeudasCliente(cliente: string, vendedor: string): Promise<any> {
+      var query = this.db.collection("ventas");
+      if (cliente) {
+          query = query.where('cliente', '==', cliente);
+      } else {
+          query = query.where('vendedor', '==', vendedor);
+      }
+
+      var coleccionClientes = this.db.collection("clientes");
     return new Promise((resolve, reject) => {
-        this.db.collection("ventas")
-        .where('cliente', '==', cliente)
-        .where('importeDeuda','>',0)
+        query.where('importeDeuda','>',0)
         .get()
         .then((querySnapshot) => {
             let arr = [];
+            var counter = querySnapshot.size;
+            if (counter === 0) {
+                this.finalizarGetCobros(arr, resolve);
+                //return;
+            }
+            var self = this;
             querySnapshot.forEach(function (doc) {
                 var obj = doc.data();
                 //var data_stringify = JSON.stringify(data);
                 //var obj = JSON.parse(data_stringify);
                 obj.$key = doc.id
-                console.log(obj)
-                arr.push(obj);
+                coleccionClientes.doc(obj.cliente).get().then((clienteDoc)=>{
+                    var clienteEntero = clienteDoc.data()
+                    obj.clienteNombre = clienteEntero.nombre;
+                    obj.clienteDireccion = clienteEntero.direccion;
+                    console.log(obj)
+                    arr.push(obj);
+                    counter--;
+                    if (counter === 0) {
+                        self.finalizarGetCobros(arr, resolve);
+                    }
+                });
             });
 
-            arr = arr.sort((obj1, obj2) => {
-                if (obj1.fecha > obj2.fecha) {
-                    return 1;
-                }
-            
-                if (obj1.fecha < obj2.fecha) {
-                    return -1;
-                }
-            
-                return 0;
-            });
-                
-                if (arr.length > 0) {
-                    console.log("Document data:", arr);
-                    resolve(arr);
-                } else {
-                    console.log("No such document!");
-                    resolve(null);
-                }
-                
             })
             .catch((error: any) => {
                 reject(error);
             });
         });
     }
+
+finalizarGetCobros(arr, resolve) {
+    
+    arr = arr.sort((obj1, obj2) => {
+        if (obj1.fecha > obj2.fecha) {
+            return 1;
+        }
+    
+        if (obj1.fecha < obj2.fecha) {
+            return -1;
+        }
+    
+        return 0;
+    });
+        
+        if (arr.length > 0) {
+            console.log("Document data:", arr);
+            resolve(arr);
+        } else {
+            console.log("No such document!");
+            resolve(null);
+        }
+        
+}
 
 
   getUsuario(): Promise<any> {

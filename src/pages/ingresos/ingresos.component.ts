@@ -12,6 +12,7 @@ export class IngresosComponent {
   model: any = {};
   cobros: any = {};
   vendedor: string;
+  botonActivo: boolean = false;
   private hoy: Date = new Date();
   private hoySinHora: Date = new Date(this.hoy.getFullYear(), this.hoy.getMonth(), this.hoy.getDate(), 0, 0, 0, 0);
 
@@ -25,7 +26,7 @@ export class IngresosComponent {
 
   get totalCobros() {
     var subtotal = 0;
-    if (!this.model || !this.model.cobrosIngresados) {
+    if (!this.model || !this.model.cobrosIngresados || !this.cobros) {
         return 0;
     }
 
@@ -46,6 +47,7 @@ export class IngresosComponent {
         });
         this.service.getCobrosPendientes(this.vendedor).then((d)=> {
             this.cobros = d;
+            this.botonActivo =true;
             this.model.cobrosIngresados = [];
             if (!d) {
                 return;
@@ -57,7 +59,9 @@ export class IngresosComponent {
     }
         
     addIngreso(){
+        this.botonActivo = false;
         this.service.addIngreso(this.model).then(()=>{
+            this.botonActivo = true;
             this.loadData();
         });
     }
