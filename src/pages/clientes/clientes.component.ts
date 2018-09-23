@@ -68,7 +68,12 @@ export class ClientesComponent {
         this.service.getAllClientes(this.provincia, this.municipio, this.distrito).then((e) => {
             this.clientes = e;
             this.clientesSinFiltrar = e;
-            this.titulo = "Clientes (" + e.length.toString() + ")";
+            if (e && e.length > 0) {
+                this.titulo = "Clientes (" + e.length.toString() + ")";
+            } else {
+                this.titulo = "Clientes";
+            }
+            
         });
     }
 

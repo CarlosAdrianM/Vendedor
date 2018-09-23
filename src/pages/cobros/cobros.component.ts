@@ -60,6 +60,7 @@ export class CobrosComponent {
             this.deudas = d;
             this.model.deudasCobradas = [];
             if (!d) {
+                this.loading.dismiss();
                 return;
             }
             this.totalDeuda = 0;

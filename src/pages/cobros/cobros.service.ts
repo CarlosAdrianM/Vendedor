@@ -202,11 +202,12 @@ finalizarGetCobros(arr, resolve) {
 
     entregar(dataObj: any) {
         var docID = dataObj.$key;
+        var fechaEntrega = firebase.firestore.Timestamp.now();
         return new Promise((resolve, reject) => {
             this.db
                 .collection("ventas")
                 .doc(docID)
-                .set({entregado: true}, {merge: true})
+                .set({entregado: true, fechaEntrega: fechaEntrega}, {merge: true})
                 .then((obj: any) => {
                     resolve(obj);
                 })
