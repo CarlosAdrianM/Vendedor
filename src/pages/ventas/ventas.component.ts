@@ -48,7 +48,7 @@ export class VentasComponent {
     }
 
     addLinea() {
-        this.linea = {producto:this.productos[0].$key, cantidad:1, precio: this.productos[0].precioProfesional / this.INCREMENTO_IMPUESTO};
+        this.linea = {producto:this.productos[0].$key, nombreProducto: this.productos[0].nombre, cantidad:1, precio: this.productos[0].precioProfesional / this.INCREMENTO_IMPUESTO};
         this.lineas.push(this.linea);
     }
 
@@ -70,6 +70,7 @@ export class VentasComponent {
       var index = this.lineas.indexOf(linea);
       if (index > -1) {
         this.lineas[index].precio = producto.precioProfesional / this.INCREMENTO_IMPUESTO;
+        this.lineas[index].nombreProducto = producto.nombre;
       }
     }
 }

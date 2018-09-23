@@ -4,7 +4,7 @@
         <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>
-      Clientes
+      {{titulo}}
     </ion-title>
   </ion-navbar>
 </ion-header>
@@ -60,8 +60,8 @@
     <ion-searchbar #barra placeholder="Introduzca algún dato del cliente" (ionInput)="filtrarBusqueda($event)" (ionClear)="resetearFiltros()" (ionFocus)="seleccionarTexto($event)"></ion-searchbar>
     
     <ion-item-sliding *ngFor="let cliente of clientes">
-      <ion-item>
-        <strong>{{cliente.nombre}}</strong>
+      <ion-item [color]="masDeUnMes(cliente.ultimaVisita) ? 'danger' : null" >
+        <p><strong>{{cliente.nombre}}</strong></p>
         <p>{{cliente.direccion}}</p>
         <p *ngIf="cliente.email">Email: {{cliente.email}}</p>
         <p *ngIf="cliente.comentarios">Comentarios: {{cliente.comentarios}}</p>

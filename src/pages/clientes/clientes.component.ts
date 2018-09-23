@@ -23,6 +23,7 @@ export class ClientesComponent {
   vendedor: string;
   usuario: any;
   botonActivo: boolean = true;
+  titulo: string = "Clientes";
 
   _provincia: any;
   get provincia(): any {
@@ -67,6 +68,7 @@ export class ClientesComponent {
         this.service.getAllClientes(this.provincia, this.municipio, this.distrito).then((e) => {
             this.clientes = e;
             this.clientesSinFiltrar = e;
+            this.titulo = "Clientes (" + e.length.toString() + ")";
         });
     }
 
@@ -177,6 +179,15 @@ export class ClientesComponent {
 
     crearCobro(cliente: string) {
         this.navCtrl.push(CobrosComponent, { cliente: cliente, vendedor: this.vendedor });
+    }
+    
+    masDeUnMes(ultimaVisita: firebase.firestore.Timestamp): boolean {
+        if (!ultimaVisita) {
+            return false;
+        }
+        var hoy = new Date();
+        var haceUnMes = new Date(hoy.setMonth(hoy.getMonth() - 1));
+        return ultimaVisita.toDate() < haceUnMes;
     }
 
     seleccionarTexto(evento: any): void {

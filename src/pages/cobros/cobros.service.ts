@@ -199,4 +199,20 @@ finalizarGetCobros(arr, resolve) {
             });
         });
     }  
+
+    entregar(dataObj: any) {
+        var docID = dataObj.$key;
+        return new Promise((resolve, reject) => {
+            this.db
+                .collection("ventas")
+                .doc(docID)
+                .set({entregado: true}, {merge: true})
+                .then((obj: any) => {
+                    resolve(obj);
+                })
+                .catch((error: any) => {
+                    reject(error);
+                });
+        });
+    }
 }
