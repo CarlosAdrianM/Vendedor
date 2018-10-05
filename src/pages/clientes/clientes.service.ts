@@ -30,6 +30,13 @@ export class ClientesService {
             });
 
             arr = arr.sort((obj1, obj2) => {
+                if (obj1.ultimaVisita == null) {
+                    obj1.ultimaVisita = obj1.fechaCreacion;
+                }
+                if (obj2.ultimaVisita == null) {
+                    obj2.ultimaVisita = obj2.fechaCreacion;
+                }
+
                 if (obj1.ultimaVisita > obj2.ultimaVisita) {
                     return 1;
                 }

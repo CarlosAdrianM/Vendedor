@@ -64,21 +64,27 @@ export class VentasService {
     dataObj.importeDeuda = dataObj.total;
 
     return new Promise((resolve, reject) => {
-        var batch = this.db.batch();
-        var ventaRef = this.db.collection("ventas").doc();
-        batch.set(ventaRef, dataObj);
-        lineas.forEach(l => {
-            l.precio = +l.precio;
-            l.cantidad = +l.cantidad;
-            var lineaRef = this.db.collection("ventas").doc(ventaRef.id).collection("lineas").doc();
-            batch.set(lineaRef, l);
-        });
-        batch.commit()
-        .then((obj: any) => {
-            resolve(obj);
-        })
-        .catch((error: any) => {
-            reject(error);
+        var clienteRef = this.db.collection("clientes").doc(dataObj.cliente);
+        clienteRef.get().then(c=>{
+            dataObj.nombre = c.data().nombre;
+            dataObj.direccion = c.data().direccion;
+
+            var batch = this.db.batch();
+            var ventaRef = this.db.collection("ventas").doc();
+            batch.set(ventaRef, dataObj);
+            lineas.forEach(l => {
+                l.precio = +l.precio;
+                l.cantidad = +l.cantidad;
+                var lineaRef = this.db.collection("ventas").doc(ventaRef.id).collection("lineas").doc();
+                batch.set(lineaRef, l);
+            });
+            batch.commit()
+            .then((obj: any) => {
+                resolve(obj);
+            })
+            .catch((error: any) => {
+                reject(error);
+            });
         });
     });
   }
