@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, LoadingController } from 'ionic-angular';
 import { CobrosService } from './cobros.service';
+import { VentasComponent } from '../ventas/ventas.component';
 
 
 @Component({
@@ -97,6 +98,10 @@ export class CobrosComponent {
         var hoy = new Date();
         var haceUnMes = new Date(hoy.setMonth(hoy.getMonth() - 1));
         return fecha.toDate() < haceUnMes;
+    }
+
+    abrirVenta(venta: any) {
+        this.navCtrl.push(VentasComponent, {venta: venta});
     }
 
     public seleccionarTexto(evento: any): void {

@@ -17,11 +17,15 @@ export class VentasComponent {
   vendedor: string;
   linea: any;
   lineas: any;
-  botonActivo: boolean = true;
+  botonActivo: boolean = false;
+  ventaCargada: any;
   private hoy: Date = new Date();
   private hoySinHora: Date = new Date(this.hoy.getFullYear(), this.hoy.getMonth(), this.hoy.getDate(), 0, 0, 0, 0);
 
   get total() {
+    if (!this.lineas) {
+      return 0;
+    }
     var subtotal = 0;
     this.lineas.forEach(l => {
       subtotal += (l.precio * l.cantidad);
@@ -34,11 +38,22 @@ export class VentasComponent {
   constructor(public navCtrl: NavController, navParams: NavParams, private service: VentasService) {
     this.cliente = navParams.get("cliente");
     this.vendedor = navParams.get("vendedor");
+    this.ventaCargada = navParams.get("venta");
     this.getProductos();
-    this.model.cliente = this.cliente;
-    this.model.vendedor = this.vendedor;
-    this.model.fecha = this.hoySinHora;
-    this.lineas = [];
+    if (!this.ventaCargada) {
+      this.model.cliente = this.cliente;
+      this.model.vendedor = this.vendedor;
+      this.model.fecha = this.hoySinHora;
+      this.lineas = [];  
+      this.botonActivo = true;
+    } else {
+      this.model.cliente = this.ventaCargada.cliente;
+      this.model.vendedor = this.ventaCargada.vendedor;
+      this.model.fecha = this.ventaCargada.fecha;
+      this.service.getLineas(this.ventaCargada.$key).then(l=>{
+        this.lineas = l;
+      });
+    }
   }
       
     addVenta(){
@@ -52,6 +67,9 @@ export class VentasComponent {
     addLinea() {
         this.linea = {producto:this.productos[0].$key, nombreProducto: this.productos[0].nombre, cantidad:1, precio: this.productos[0].precioProfesional / this.INCREMENTO_IMPUESTO, stock: this.productos[0].stock};
         this.linea.precioTarifa = this.linea.precio;
+        if (!this.lineas) {
+          this.lineas = [];
+        }
         this.lineas.push(this.linea);
     }
 

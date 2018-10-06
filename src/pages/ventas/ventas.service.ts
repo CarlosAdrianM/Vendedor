@@ -42,6 +42,37 @@ export class VentasService {
       });
   }
 
+  getLineas(ventaId: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+        this.db.collection("ventas").doc(ventaId).collection("lineas")
+            .get()
+            .then((querySnapshot) => {
+                let arr = [];
+                querySnapshot.forEach(function (doc) {
+                    var obj = doc.data();
+                    //var data_stringify = JSON.stringify(data);
+                    //var obj = JSON.parse(data_stringify);
+                    obj.$key = doc.id
+                    console.log(obj)
+                    arr.push(obj);
+                });
+
+                
+              if (arr.length > 0) {
+                  console.log("Document data:", arr);
+                  resolve(arr);
+              } else {
+                  console.log("No such document!");
+                  resolve(null);
+              }
+              
+          })
+          .catch((error: any) => {
+              reject(error);
+          });
+      });
+  }
+
   deleteDocument(collectionName: string, docID: string): Promise<any> {
   return new Promise((resolve, reject) => {
       this.db

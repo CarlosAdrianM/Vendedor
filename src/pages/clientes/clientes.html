@@ -88,7 +88,7 @@
     </ion-item-sliding>
   </ion-list>
 
-  <ion-fab *ngIf="!isEditing" right bottom (click)="crearCliente()">
+  <ion-fab *ngIf="!isEditing && municipio && distrito" right bottom (click)="crearCliente()">
     <button ion-fab><ion-icon name="add"></ion-icon></button>
   </ion-fab>
 
