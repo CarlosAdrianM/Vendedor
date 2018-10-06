@@ -23,7 +23,7 @@
         <ion-option *ngFor="let municip of municipios" [value]="municip">{{municip.nombre}}</ion-option>
       </ion-select>
     </ion-item>
-    <ion-item *ngIf="municipio">
+    <ion-item *ngIf="municipio && distrito">
       <ion-label floating>Distrito:</ion-label>
       <ion-select [(ngModel)]="distrito">
         <ion-option *ngFor="let distr of distritos" [value]="distr">{{distr.nombre}}</ion-option>
