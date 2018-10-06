@@ -72,18 +72,34 @@ export class VentasService {
             var batch = this.db.batch();
             var ventaRef = this.db.collection("ventas").doc();
             batch.set(ventaRef, dataObj);
+            var counter = lineas.length;
             lineas.forEach(l => {
                 l.precio = +l.precio;
                 l.cantidad = +l.cantidad;
                 var lineaRef = this.db.collection("ventas").doc(ventaRef.id).collection("lineas").doc();
                 batch.set(lineaRef, l);
-            });
-            batch.commit()
-            .then((obj: any) => {
-                resolve(obj);
-            })
-            .catch((error: any) => {
-                reject(error);
+                var productoRef = this.db.collection("productos").doc(l.producto);
+                productoRef.get().then(p => {
+                    if (!p.stock) {
+                        p.stock = 0;
+                    }
+                    if (!p.unidadesVendidas) {
+                        p.unidadesVendidas = 0;
+                    }
+                    p.stock -= l.cantidad;
+                    p.unidadesVendidas += l.cantidad;
+                    batch.set(productoRef, {stock: p.stock, unidadesVendidas: p.unidadesVendidas}, {merge: true});
+                    counter--;
+                    if (counter === 0) {
+                        batch.commit()
+                        .then((obj: any) => {
+                            resolve(obj);
+                        })
+                        .catch((error: any) => {
+                            reject(error);
+                        });                                    
+                    }
+                })
             });
         });
     });
@@ -116,5 +132,4 @@ export class VentasService {
             });
         });
     }
-  
 }

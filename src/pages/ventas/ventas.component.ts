@@ -17,6 +17,7 @@ export class VentasComponent {
   vendedor: string;
   linea: any;
   lineas: any;
+  botonActivo: boolean = true;
   private hoy: Date = new Date();
   private hoySinHora: Date = new Date(this.hoy.getFullYear(), this.hoy.getMonth(), this.hoy.getDate(), 0, 0, 0, 0);
 
@@ -41,6 +42,7 @@ export class VentasComponent {
   }
       
     addVenta(){
+        this.botonActivo = false;
         this.model.total = this.total;
         this.service.addVenta(this.model, this.lineas).then(()=>{
             this.navCtrl.pop();
@@ -48,7 +50,7 @@ export class VentasComponent {
     }
 
     addLinea() {
-        this.linea = {producto:this.productos[0].$key, nombreProducto: this.productos[0].nombre, cantidad:1, precio: this.productos[0].precioProfesional / this.INCREMENTO_IMPUESTO};
+        this.linea = {producto:this.productos[0].$key, nombreProducto: this.productos[0].nombre, cantidad:1, precio: this.productos[0].precioProfesional / this.INCREMENTO_IMPUESTO, stock: this.productos[0].stock};
         this.linea.precioTarifa = this.linea.precio;
         this.lineas.push(this.linea);
     }
@@ -73,6 +75,14 @@ export class VentasComponent {
         this.lineas[index].precio = producto.precioProfesional / this.INCREMENTO_IMPUESTO;
         this.lineas[index].precioTarifa = this.lineas[index].precio;
         this.lineas[index].nombreProducto = producto.nombre;
+        this.lineas[index].stock = producto.stock ? producto.stock : 0;
       }
+    }
+
+    colorStock(linea: any): any {
+      if (!linea || linea.stock == undefined || !linea.cantidad) {
+        return 'primary';
+      }
+      return +linea.cantidad > +linea.stock ? 'danger' : 'secondary';
     }
 }

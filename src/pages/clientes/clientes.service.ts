@@ -12,8 +12,15 @@ export class ClientesService {
   }
 
   getAllClientes(provincia: any, municipio: any, distrito: any): Promise<any> {
-      var refDistrito = this.db.collection("provincias").doc(provincia.$key).collection("municipios").doc(municipio.$key).collection("distritos").doc(distrito.$key);
+      var refDistrito:any;
+      if (distrito) {
+          refDistrito = this.db.collection("provincias").doc(provincia.$key).collection("municipios").doc(municipio.$key).collection("distritos").doc(distrito.$key);
+      }
+      
   return new Promise((resolve, reject) => {
+      if (!distrito) {
+          resolve(null);
+      }
       this.db.collection("clientes")
         //.where('provincia','==', provincia.$key)
         .where('distrito', '==', refDistrito)
@@ -63,6 +70,41 @@ export class ClientesService {
           });
       });
   }
+
+  getDistritos(collection: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+        this.getUsuario().then(u=>{
+            this.db.collection(collection)
+            .where('vendedor','==',u.vendedor)
+            .get()
+            .then((querySnapshot) => {
+                let arr = [];
+                querySnapshot.forEach(function (doc) {
+                    var obj = doc.data();
+                    //var data_stringify = JSON.stringify(data);
+                    //var obj = JSON.parse(data_stringify);
+                    obj.$key = doc.id
+                    console.log(obj)
+                    arr.push(obj);
+                });
+  
+                
+                if (arr.length > 0) {
+                    console.log("Document data:", arr);
+                    resolve(arr);
+                } else {
+                    console.log("No such document!");
+                    resolve(null);
+                }
+                
+            })
+            .catch((error: any) => {
+                reject(error);
+            });
+        });
+        });
+    }
+  
 
   deleteDocument(collectionName: string, docID: string): Promise<any> {
   return new Promise((resolve, reject) => {

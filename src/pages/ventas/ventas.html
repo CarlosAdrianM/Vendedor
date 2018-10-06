@@ -25,7 +25,7 @@
             </ion-col>
             <ion-col col-2><ion-input type="number" [(ngModel)]="linea.cantidad"></ion-input></ion-col>
             <ion-col col-3><ion-input type="text" [(ngModel)]="linea.precio"></ion-input></ion-col>
-            <ion-col col-1><button ion-button icon-only round outline small (click)="borrarLinea(linea)"><ion-icon name="trash"></ion-icon></button></ion-col>
+            <ion-col col-1><button ion-button icon-only round outline small [color]="colorStock(linea)" (click)="borrarLinea(linea)"><ion-icon name="trash"></ion-icon></button></ion-col>
         </ion-row>
     </ion-grid>
     <button ion-button full (click)="addLinea()">Añadir Línea</button>
@@ -35,5 +35,5 @@
             <p item-right><strong>{{ total | currency:'DOP' }}</strong></p>
         </ion-item>
     </ion-list>
-    <button ion-button full (click)="addVenta()">Guardar Venta</button>
+    <button ion-button full [disabled]="!botonActivo" (click)="addVenta()">Guardar Venta</button>
 </ion-content>

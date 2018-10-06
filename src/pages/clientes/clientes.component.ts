@@ -98,16 +98,17 @@ export class ClientesComponent {
             } else {
                 this.municipio = this.municipios[0];
             }
-            this.seleccionarVendedor(this.municipio.vendedor);
         })
     }
     cargarDistritos(provincia: string, municipio: string) {
-        this.mainService.getAllDocuments("provincias/"+provincia+"/municipios/"+municipio+"/distritos").then((p)=>{
+        this.service.getDistritos("provincias/"+provincia+"/municipios/"+municipio+"/distritos").then((p)=>{
             var distritosData = [];
-            p.forEach(m => {
-                var obj = {$key: m.$key, nombre: m.nombre, vendedor: m.vendedor.id};
-                distritosData.push(obj);
-            });
+            if (p) {
+                p.forEach(m => {
+                    var obj = {$key: m.$key, nombre: m.nombre, vendedor: m.vendedor.id};
+                    distritosData.push(obj);
+                });    
+            }
             this.distritos = distritosData;
             var distritoEncontrado =this.distritos.find(x=> x.$key === this.usuario.ultimoDistrito);
             if (distritoEncontrado) {
@@ -115,7 +116,9 @@ export class ClientesComponent {
             } else {
                 this.distrito = this.distritos[0];
             }
-            this.seleccionarVendedor(this.distrito.vendedor);
+            if (this.distrito) {
+                this.seleccionarVendedor(this.distrito.vendedor);
+            }
         })
     }
     loadData(){
