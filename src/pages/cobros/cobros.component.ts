@@ -104,6 +104,10 @@ export class CobrosComponent {
         this.navCtrl.push(VentasComponent, {venta: venta});
     }
 
+    crearCobro(cliente: string) {
+        this.navCtrl.push(CobrosComponent, { cliente: cliente, vendedor: this.vendedor });
+    }
+
     public seleccionarTexto(evento: any): void {
         var nativeInputEle = evento._native.nativeElement;
         nativeInputEle.select();

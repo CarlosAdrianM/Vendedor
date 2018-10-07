@@ -57,8 +57,12 @@
                     <ion-icon name="car"></ion-icon>
                     Entregar
                 </button>
-                <button ion-button color="secondary" (click)="abrirVenta(deuda)">
+                <button ion-button color="dark" (click)="crearCobro(deuda.cliente)">
                     <ion-icon name="cash"></ion-icon>
+                      cobrar
+                  </button> 
+                <button ion-button color="secondary" (click)="abrirVenta(deuda)">
+                    <ion-icon name="eye"></ion-icon>
                       Ver Venta
                   </button>
             </ion-item-options>
