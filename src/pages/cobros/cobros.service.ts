@@ -70,7 +70,10 @@ export class CobrosService {
                         var nuevoVentaCobro = ventaRef.collection("cobros").doc();
                         tr.set(nuevoVentaCobro,{fecha:dataObj.fechaCreacion, importe: restaPorCobrar >= 0 ? 
                             v.data().importeDeuda : v.data().importeDeuda - restaPorCobrar});
-                        tr.update(ventaRef, {"importeDeuda": restaPorCobrar >= 0 ? 0 : -restaPorCobrar});
+                        tr.update(ventaRef, {
+                            importeDeuda: restaPorCobrar >= 0 ? 0 : -restaPorCobrar, 
+                            fechaUltimoCobro: dataObj.fechaCreacion
+                        });
                         counter--;
                         if (counter === 0 || (dataObj.importeCobrado && sumaImporte >= dataObj.importeCobrado)) { // para que solo entre cuando estén los get hechos
                             return this.finalizarCobro(dataObj, sumaImporte, tr, resolve, reject);

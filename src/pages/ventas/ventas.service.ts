@@ -110,7 +110,8 @@ export class VentasService {
                 var lineaRef = this.db.collection("ventas").doc(ventaRef.id).collection("lineas").doc();
                 batch.set(lineaRef, l);
                 var productoRef = this.db.collection("productos").doc(l.producto);
-                productoRef.get().then(p => {
+                productoRef.get().then(prod => {
+                    var p = prod.data();
                     if (!p.stock) {
                         p.stock = 0;
                     }
