@@ -43,6 +43,9 @@
     </ion-list>
 
     <ion-list *ngIf="!model.cliente && model.deudasCobradas && model.deudasCobradas.length > 0">
+        <ion-item *ngIf="usuario.nivelDeAcceso=='admin'">
+                <selector-vendedores etiqueta="Vendedor:" [seleccionado]="vendedor" (seleccionar)="seleccionarVendedor($event)"></selector-vendedores>
+        </ion-item>
         <ion-item-sliding *ngFor="let deuda of deudas">
             <ion-item [color]="masDeUnMes(deuda.fechaUltimoCobro ? deuda.fechaUltimoCobro : deuda.fecha) ? 'danger' : null">
                 <p><strong>Cliente: {{deuda.clienteNombre}}</strong></p>
@@ -50,7 +53,7 @@
                 <p>Fecha: {{deuda.fecha.toDate() | date:locale}}</p>
                 <p>Importe Venta: {{deuda.total | currency:'DOP'}}</p>
                 <p *ngIf="deuda.fechaUltimoCobro">Último cobro: {{deuda.fechaUltimoCobro | date:locale}}</p>
-                <p>Importe Pendiente: {{deuda.importeDeuda | currency:'DOP'}}</p>
+                <p *ngIf="deuda.total != deuda.importeDeuda">Importe Pendiente: {{deuda.importeDeuda | currency:'DOP'}}</p>
                 <ion-icon *ngIf="deuda.entregado" item-right name="car"></ion-icon>
             </ion-item>
             <ion-item-options>

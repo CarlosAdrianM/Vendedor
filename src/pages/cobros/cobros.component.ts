@@ -17,6 +17,7 @@ export class CobrosComponent {
   botonActivo: boolean = true;
   titulo: string;
   totalDeuda: number = 0;
+  usuario: any;
   private hoy: Date = new Date();
   private hoySinHora: Date = new Date(this.hoy.getFullYear(), this.hoy.getMonth(), this.hoy.getDate(), 0, 0, 0, 0);
   private loading: any;
@@ -24,57 +25,56 @@ export class CobrosComponent {
   constructor(public navCtrl: NavController, navParams: NavParams, private service: CobrosService, public loadingCtrl: LoadingController) {
     this.cliente = navParams.get("cliente");
     this.vendedor = navParams.get("vendedor");
-
-    this.loading = this.loadingCtrl.create({
-        content: 'Cargando deudas...'
-    });
     
     if (this.cliente) {
         this.titulo = "Cobros";
     } else {
         this.titulo = "Deudas";
-        this.loading.present();
     }
 
     this.model.cliente = this.cliente;
     this.model.fecha = this.hoySinHora;
     this.model.aplicarAuto = false;
 
-    if (!this.vendedor) {
-        this.service.getUsuario().then((u)=>{
-            this.vendedor=u.vendedor.id;
-            this.model.vendedor = this.vendedor;
-            this.loadData();
-        })
-    } else {
+    this.service.getUsuario().then((u)=>{
+        this.usuario = u;
+        if (!this.vendedor) {
+            this.vendedor=this.usuario.vendedor.id;
+        }    
         this.model.vendedor = this.vendedor;
         this.loadData();
-    }
+    });
+
   }
 
     loadData(){
-        this.model.comentarios = '';
-        this.service.getCobrosCliente(this.cliente).then((e)=>{
-            this.cobros = e;
+        this.loading = this.loadingCtrl.create({
+            content: 'Cargando deudas...'
         });
-        this.service.getDeudasCliente(this.cliente, this.vendedor).then((d)=> {
-            this.deudas = d;
-            this.model.deudasCobradas = [];
-            if (!d) {
-                this.loading.dismiss();
-                return;
-            }
-            this.totalDeuda = 0;
-            d.forEach(e => {
-                this.model.deudasCobradas.push(e.$key);
-                this.totalDeuda += e.importeDeuda;
+        this.loading.present().then(()=>{
+            this.model.comentarios = '';
+            this.service.getCobrosCliente(this.cliente).then((e)=>{
+                this.cobros = e;
             });
-            if (this.cliente) {
-                this.titulo = "Cobros (" + this.totalDeuda + ")";
-            } else {
-                this.titulo = "Deudas ("+ this.totalDeuda + ")";
+            this.service.getDeudasCliente(this.cliente, this.vendedor).then((d)=> {
+                this.deudas = d;
+                this.model.deudasCobradas = [];
+                if (!d) {
+                    this.loading.dismiss();
+                    return;
+                }
+                this.totalDeuda = 0;
+                d.forEach(e => {
+                    this.model.deudasCobradas.push(e.$key);
+                    this.totalDeuda += e.importeDeuda;
+                });
+                if (this.cliente) {
+                    this.titulo = "Cobros (" + this.totalDeuda + ")";
+                } else {
+                    this.titulo = "Deudas ("+ this.totalDeuda + ")";
+                }
                 this.loading.dismiss();
-            }
+            })    
         })
     }
         
@@ -105,7 +105,12 @@ export class CobrosComponent {
     }
 
     crearCobro(cliente: string) {
-        this.navCtrl.push(CobrosComponent, { cliente: cliente, vendedor: this.vendedor });
+        this.navCtrl.push(CobrosComponent, { cliente: cliente, vendedor: this.usuario.vendedor.id });
+    }
+
+    seleccionarVendedor(evento: any) {
+        this.vendedor = evento;
+        this.loadData();
     }
 
     public seleccionarTexto(evento: any): void {
