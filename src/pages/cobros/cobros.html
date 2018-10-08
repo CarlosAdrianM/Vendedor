@@ -42,10 +42,11 @@
         </ion-item>
     </ion-list>
 
-    <ion-list *ngIf="!model.cliente && model.deudasCobradas && model.deudasCobradas.length > 0">
-        <ion-item *ngIf="usuario.nivelDeAcceso=='admin'">
-                <selector-vendedores etiqueta="Vendedor:" [seleccionado]="vendedor" (seleccionar)="seleccionarVendedor($event)"></selector-vendedores>
-        </ion-item>
+    <ion-item *ngIf="usuario && usuario.nivelDeAcceso=='admin'">
+        <selector-vendedores etiqueta="Vendedor:" [seleccionado]="vendedor" (seleccionar)="seleccionarVendedor($event)"></selector-vendedores>
+    </ion-item>
+
+    <ion-list *ngIf="!model.cliente && model.deudasCobradas && model.deudasCobradas.length > 0">    
         <ion-item-sliding *ngFor="let deuda of deudas">
             <ion-item [color]="masDeUnMes(deuda.fechaUltimoCobro ? deuda.fechaUltimoCobro : deuda.fecha) ? 'danger' : null">
                 <p><strong>Cliente: {{deuda.clienteNombre}}</strong></p>

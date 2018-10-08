@@ -74,9 +74,14 @@ export class ClientesService {
   getDistritos(collection: string): Promise<any> {
     return new Promise((resolve, reject) => {
         this.getUsuario().then(u=>{
-            this.db.collection(collection)
-            .where('vendedor','==',u.vendedor)
-            .get()
+            var refColeccionClientes;
+            if (u.nivelDeAcceso == 'admin') {
+                refColeccionClientes = this.db.collection(collection);
+            } else {
+                refColeccionClientes = this.db.collection(collection).where('vendedor','==',u.vendedor);
+            }
+            
+            refColeccionClientes.get()
             .then((querySnapshot) => {
                 let arr = [];
                 querySnapshot.forEach(function (doc) {
