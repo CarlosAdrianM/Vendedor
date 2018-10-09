@@ -53,7 +53,7 @@
                 <p>Dirección: {{deuda.clienteDireccion}}</p>
                 <p>Fecha: {{deuda.fecha.toDate() | date:locale}}</p>
                 <p>Importe Venta: {{deuda.total | currency:'DOP'}}</p>
-                <p *ngIf="deuda.fechaUltimoCobro">Último cobro: {{deuda.fechaUltimoCobro | date:locale}}</p>
+                <p *ngIf="deuda.fechaUltimoCobro">Último cobro: {{deuda.fechaUltimoCobro.toDate() | date:locale}}</p>
                 <p *ngIf="deuda.total != deuda.importeDeuda">Importe Pendiente: {{deuda.importeDeuda | currency:'DOP'}}</p>
                 <ion-icon *ngIf="deuda.entregado" item-right name="car"></ion-icon>
             </ion-item>
