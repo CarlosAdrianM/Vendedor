@@ -11,6 +11,10 @@
 
 <ion-content padding>
     <ion-list>
+        <ion-item *ngIf="usuario && usuario.nivelDeAcceso=='admin'">
+            <selector-vendedores etiqueta="Vendedor:" [seleccionado]="vendedor.id" (seleccionar)="seleccionarVendedor($event)"></selector-vendedores>
+        </ion-item>
+            
         <ion-item *ngIf="cobros && cobros.length > 0">
             <ion-label>Cobros a Ingresar</ion-label>
             <ion-select multiple="true" [(ngModel)]="model.cobrosIngresados">

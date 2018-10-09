@@ -157,4 +157,24 @@ export class IngresosService {
             });
         });
     }  
+
+    getVendedor(vendedorId: string): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.db.collection("vendedores").doc(vendedorId)
+            .get()
+            .then(doc => {
+                if (doc.exists) {
+                    console.log("Document data:", doc.data());
+                    resolve(doc.ref);
+                } else {
+                    // doc.data() will be undefined in this case
+                    console.log("No such document!");
+                    reject(doc);
+                }
+            }).catch(function(error) {
+                console.log("Error getting document:", error);
+                reject(error);
+            });
+        })
+    }
 }

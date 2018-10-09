@@ -12,6 +12,7 @@ export class IngresosComponent {
   model: any = {};
   cobros: any = {};
   vendedor: string;
+  usuario: any;
   botonActivo: boolean = false;
   private hoy: Date = new Date();
   private hoySinHora: Date = new Date(this.hoy.getFullYear(), this.hoy.getMonth(), this.hoy.getDate(), 0, 0, 0, 0);
@@ -19,6 +20,7 @@ export class IngresosComponent {
   constructor(public navCtrl: NavController, private service: IngresosService) {
     this.model.fecha = this.hoySinHora;
     this.service.getUsuario().then((u)=>{
+        this.usuario = u;
         this.vendedor = u.vendedor;
         this.loadData();
     })
@@ -65,6 +67,14 @@ export class IngresosComponent {
             this.loadData();
         });
     }
+
+    seleccionarVendedor(evento: any) {
+        this.service.getVendedor(evento).then(v => {
+            this.vendedor = v;
+            this.loadData();
+        })
+    }
+
 
     public seleccionarTexto(evento: any): void {
         var nativeInputEle = evento._native.nativeElement;
