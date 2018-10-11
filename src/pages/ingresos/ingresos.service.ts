@@ -15,6 +15,7 @@ export class IngresosService {
   return new Promise((resolve, reject) => {
       this.db.collection("ingresos")
         .where('vendedor', '==', vendedor)
+        .orderBy("fecha", "desc")
         .get()
         .then((querySnapshot) => {
             let arr = [];
