@@ -48,15 +48,14 @@ export class IngresosComponent {
             this.ingresos = e;
             var date = new Date();
             var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
-            var sumaIngresos = 0;
+            this.model.sumaIngresos = 0;
             if(this.ingresos) {
                 for (var i of this.ingresos) {
                     if (i.fecha < firstDay) {
                         break;
                     }
-                    sumaIngresos += i.importe;
+                    this.model.sumaIngresos += i.importe;
                 };
-                this.model.sumaIngresos = sumaIngresos;    
             }
         });
         this.service.getCobrosPendientes(this.vendedor).then((d)=> {
