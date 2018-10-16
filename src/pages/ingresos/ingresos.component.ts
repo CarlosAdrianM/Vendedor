@@ -14,6 +14,8 @@ export class IngresosComponent {
   vendedor: string;
   usuario: any;
   botonActivo: boolean = false;
+  comision: number;
+  faltaParaSalto: number;
   private hoy: Date = new Date();
   private hoySinHora: Date = new Date(this.hoy.getFullYear(), this.hoy.getMonth(), this.hoy.getDate(), 0, 0, 0, 0);
 
@@ -55,6 +57,7 @@ export class IngresosComponent {
                         break;
                     }
                     this.model.sumaIngresos += i.importe;
+                    this.calcularComisiones(this.model.sumaIngresos);
                 };
             }
         });
@@ -69,6 +72,25 @@ export class IngresosComponent {
                 this.model.cobrosIngresados.push(e.$key);
             });
         })
+    }
+
+    calcularComisiones(sumaIngresos: number): void {
+        if (sumaIngresos < 65000) {
+            this.comision = 0;
+            this.faltaParaSalto = 65000 - sumaIngresos;
+        } else if (sumaIngresos < 85000) {
+            this.comision = sumaIngresos * 0.05;
+            this.faltaParaSalto = 85000 -sumaIngresos;
+        } else if (sumaIngresos < 130000) {
+            this.comision = sumaIngresos * 0.06;
+            this.faltaParaSalto = 130000 -sumaIngresos;
+        } else if (sumaIngresos < 200000) {
+            this.comision = sumaIngresos * 0.07;
+            this.faltaParaSalto = 200000 -sumaIngresos;
+        } else {
+            this.comision = sumaIngresos * 0.08;
+            this.faltaParaSalto = 0;
+        }
     }
         
     addIngreso(){
