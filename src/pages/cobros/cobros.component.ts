@@ -17,6 +17,8 @@ export class CobrosComponent {
   botonActivo: boolean = true;
   titulo: string;
   totalDeuda: number = 0;
+  totalDeudaEntregada: number = 0;
+  totalDeudaSinEntregar: number = 0;
   usuario: any;
   private hoy: Date = new Date();
   private hoySinHora: Date = new Date(this.hoy.getFullYear(), this.hoy.getMonth(), this.hoy.getDate(), 0, 0, 0, 0);
@@ -64,9 +66,16 @@ export class CobrosComponent {
                     return;
                 }
                 this.totalDeuda = 0;
+                this.totalDeudaEntregada = 0;
+                this.totalDeudaSinEntregar = 0;
                 d.forEach(e => {
                     this.model.deudasCobradas.push(e.$key);
                     this.totalDeuda += e.importeDeuda;
+                    if (e.entregado) {
+                        this.totalDeudaEntregada += e.importeDeuda;
+                    } else {
+                        this.totalDeudaSinEntregar += e.importeDeuda;
+                    }
                 });
                 if (this.cliente) {
                     this.titulo = "Cobros (" + this.totalDeuda + ")";

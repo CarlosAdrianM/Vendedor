@@ -72,6 +72,14 @@
                   </button>
             </ion-item-options>
         </ion-item-sliding>
+        <ion-item>
+            <ion-label>Deuda entregada</ion-label>
+            <p item-right>{{totalDeudaEntregada | currency:'DOP'}}</p>
+        </ion-item>
+        <ion-item>
+            <ion-label>Deuda sin entregar</ion-label>
+            <p item-right>{{totalDeudaSinEntregar | currency:'DOP'}}</p>
+        </ion-item>
     </ion-list>
 
     <ion-item *ngIf="!deudas && !model.cliente">
