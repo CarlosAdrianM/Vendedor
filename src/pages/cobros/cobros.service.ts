@@ -132,8 +132,8 @@ export class CobrosService {
                 obj.$key = doc.id
                 coleccionClientes.doc(obj.cliente).get().then((clienteDoc)=>{
                     var clienteEntero = clienteDoc.data()
-                    obj.clienteNombre = clienteEntero.nombre;
-                    obj.clienteDireccion = clienteEntero.direccion;
+                    obj.clienteNombre = clienteEntero ? clienteEntero.nombre : "";
+                    obj.clienteDireccion = clienteEntero ? clienteEntero.direccion : "";
                     console.log(obj)
                     arr.push(obj);
                     counter--;
