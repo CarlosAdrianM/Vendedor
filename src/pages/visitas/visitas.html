@@ -4,13 +4,13 @@
             <ion-icon name="menu"></ion-icon>
         </button>
         <ion-title>
-        Visitas
+        {{titulo}}
         </ion-title>
     </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-    <ion-list>
+    <ion-list *ngIf="cliente">
         <ion-item>
             <ion-label floating>Nivel de Interés:</ion-label>
             <ion-select [(ngModel)]="model.nivelInteres">
@@ -31,6 +31,17 @@
         </ion-item>
     </ion-list>
 
+    <ion-list *ngIf="!cliente">
+        <ion-item *ngIf="usuario && usuario.nivelDeAcceso=='admin'">
+            <selector-vendedores etiqueta="Vendedor:" [seleccionado]="vendedor.id" (seleccionar)="seleccionarVendedor($event)"></selector-vendedores>
+        </ion-item>
+        
+        <ion-item>
+            <ion-label>Fecha</ion-label>
+            <ion-datetime displayFormat="DD/MM/YYYY" [(ngModel)]="fechaFiltro" (ionChange)="loadData()" doneText="OK" cancelText="Cancelar"></ion-datetime>
+        </ion-item>
+    </ion-list>
+
     <ion-card>
         <ion-card-header>
             Opciones moviendo a izquierda
@@ -39,7 +50,9 @@
     <ion-list>
         <ion-item-sliding *ngFor="let visita of visitas">
             <ion-item>
-                <p>Fecha: {{visita.fecha.toDate() | date:locale}}</p>
+                <p *ngIf="visita.clienteNombre"><strong>{{visita.clienteNombre}}</strong></p>
+                <p *ngIf="visita.clienteDireccion">{{visita.clienteDireccion}}</p>
+                <p *ngIf="cliente">Fecha: {{visita.fecha.toDate() | date:locale}}</p>
                 <h3>Nivel de interés: {{visita.nivelInteres}}</h3>
                 <p *ngIf="visita.comentarios">{{visita.comentarios}}</p>
             </ion-item>

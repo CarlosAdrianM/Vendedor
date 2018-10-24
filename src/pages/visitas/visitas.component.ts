@@ -13,10 +13,13 @@ export class VisitasComponent {
   model: any = {};
   isEditing: boolean = false;
   cliente: string;
+  usuario: any;
   vendedor: string;
   botonActivo: boolean = true;
   private hoy: Date = new Date();
   private hoySinHora: Date = new Date(this.hoy.getFullYear(), this.hoy.getMonth(), this.hoy.getDate(), 0, 0, 0, 0);
+  fechaFiltro: string =  this.hoySinHora.toISOString();
+  titulo: string = "Visitas";
 
   get textoGuia() {
       var texto: string;
@@ -47,15 +50,33 @@ export class VisitasComponent {
     this.model.vendedor = this.vendedor;
     this.model.fecha = this.hoySinHora;
     this.model.nivelInteres = "0";
-    this.loadData();
+    this.service.getUsuario().then((u)=>{
+        this.usuario = u;
+        if (!this.cliente) {
+            this.vendedor = u.vendedor;
+        }
+        this.loadData();
+    })
+
   }
 
     loadData(){
         this.model.nivelInteres = "0";
         this.model.comentarios = '';
-        this.service.getVisitasCliente(this.cliente).then((e)=>{
-            this.visitas = e;
-        });
+        if (this.cliente) {
+            this.service.getVisitasCliente(this.cliente).then((e)=>{
+                this.visitas = e;
+            });    
+        } else {
+            this.service.getVisitasVendedorFecha(this.vendedor, this.fechaFiltro).then((e)=>{
+                this.visitas = e;
+                if (e && e.length > 0) {
+                    this.titulo = "Visitas (" + e.length.toString() + ")";
+                } else {
+                    this.titulo = "Visitas";
+                }
+            })
+        }
     }
         
     addVisita(){
@@ -88,5 +109,12 @@ export class VisitasComponent {
         this.loadData();//refresh view
         this.isEditing = false;
     });
+    }
+
+    seleccionarVendedor(evento: any) {
+        this.service.getVendedor(evento).then(v => {
+            this.vendedor = v;
+            this.loadData();
+        })
     }
 }

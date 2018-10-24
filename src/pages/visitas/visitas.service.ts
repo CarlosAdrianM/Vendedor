@@ -16,6 +16,7 @@ export class VisitasService {
       this.db.collection("visitas")
         //.where('provincia','==', provincia.$key)
         .where('cliente', '==', cliente)
+        .limit(20)
         .get()
         .then((querySnapshot) => {
             let arr = [];
@@ -43,6 +44,75 @@ export class VisitasService {
           });
       });
   }
+
+  getVisitasVendedorFecha(vendedor: any, fecha: string): Promise<any> {
+      var fechaInicial: Date = new Date(fecha);
+      fechaInicial.setDate(fechaInicial.getDate()-1);
+      var fechaFinal: Date = new Date();
+      fechaFinal.setDate(fechaInicial.getDate());
+      var coleccionClientes = this.db.collection("clientes");
+    return new Promise((resolve, reject) => {
+        this.db.collection("visitas")
+        .where('vendedor', '==', vendedor.id)
+        .where('fecha', '>', fechaInicial)
+        .where('fecha', '<', fechaFinal)
+        .get()
+        .then((querySnapshot) => {
+            let arr = [];
+            var counter = querySnapshot.size;
+            if (counter === 0) {
+                this.finalizarGetVisitasVendedorFecha(arr, resolve);
+                //return;
+            }
+
+            var self = this;
+
+            querySnapshot.forEach(function (doc) {
+                var obj = doc.data();
+                obj.$key = doc.id
+                coleccionClientes.doc(obj.cliente).get().then((clienteDoc)=>{
+                    var clienteEntero = clienteDoc.data()
+                    obj.clienteNombre = clienteEntero ? clienteEntero.nombre : "";
+                    obj.clienteDireccion = clienteEntero ? clienteEntero.direccion : "";
+                    console.log(obj)
+                    arr.push(obj);
+                    counter--;
+                    if (counter === 0) {
+                        self.finalizarGetVisitasVendedorFecha(arr, resolve);
+                    }
+                });
+            });
+                
+            })
+            .catch((error: any) => {
+                reject(error);
+            });
+        });
+    }
+
+    finalizarGetVisitasVendedorFecha(arr, resolve) {
+    
+        arr = arr.sort((obj1, obj2) => {
+            if (obj1.fecha > obj2.fecha) {
+                return 1;
+            }
+        
+            if (obj1.fecha < obj2.fecha) {
+                return -1;
+            }
+        
+            return 0;
+        });
+            
+            if (arr.length > 0) {
+                console.log("Document data:", arr);
+                resolve(arr);
+            } else {
+                console.log("No such document!");
+                resolve(null);
+            }
+            
+    }
 
   deleteDocument(collectionName: string, docID: string): Promise<any> {
   return new Promise((resolve, reject) => {
@@ -162,5 +232,27 @@ export class VisitasService {
             });
         });
     }
+
+    
+    getVendedor(vendedorId: string): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.db.collection("vendedores").doc(vendedorId)
+            .get()
+            .then(doc => {
+                if (doc.exists) {
+                    console.log("Document data:", doc.data());
+                    resolve(doc.ref);
+                } else {
+                    // doc.data() will be undefined in this case
+                    console.log("No such document!");
+                    reject(doc);
+                }
+            }).catch(function(error) {
+                console.log("Error getting document:", error);
+                reject(error);
+            });
+        })
+    }
+
   
 }
