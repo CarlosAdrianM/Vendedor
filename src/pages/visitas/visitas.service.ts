@@ -47,9 +47,9 @@ export class VisitasService {
 
   getVisitasVendedorFecha(vendedor: any, fecha: string): Promise<any> {
       var fechaInicial: Date = new Date(fecha);
-      fechaInicial.setDate(fechaInicial.getDate()-1);
-      var fechaFinal: Date = new Date();
+      var fechaFinal: Date = new Date(fecha);
       fechaFinal.setDate(fechaInicial.getDate());
+      fechaInicial.setDate(fechaInicial.getDate()-1);
       var coleccionClientes = this.db.collection("clientes");
     return new Promise((resolve, reject) => {
         this.db.collection("visitas")
