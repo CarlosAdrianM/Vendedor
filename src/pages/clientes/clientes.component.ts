@@ -21,10 +21,12 @@ export class ClientesComponent {
   isEditing: boolean = false;
   mostrarDetalle: boolean = false;
   vendedor: string;
+  vendedorFiltro: string;
   usuario: any;
   botonActivo: boolean = true;
   titulo: string = "Clientes";
   fechaMinima: firebase.firestore.Timestamp;
+  mostrarTodos: boolean = false;
 
   _provincia: any;
   get provincia(): any {
@@ -67,16 +69,27 @@ export class ClientesComponent {
   }
 
     private cargarClientes() {
-        this.service.getAllClientes(this.provincia, this.municipio, this.distrito).then((e) => {
-            this.clientes = e;
-            this.clientesSinFiltrar = e;
-            if (e && e.length > 0) {
-                this.titulo = "Clientes (" + e.length.toString() + ")";
-            } else {
-                this.titulo = "Clientes";
-            }
-            
-        });
+        if (this.mostrarTodos) {
+            this.service.getClientesVendedor(this.vendedorFiltro).then((e) => {
+                this.clientes = e;
+                this.clientesSinFiltrar = e;
+                if (e && e.length > 0) {
+                    this.titulo = "Clientes (" + e.length.toString() + ")";
+                } else {
+                    this.titulo = "Clientes";
+                }            
+            });
+        } else {
+            this.service.getClientesDistrito(this.provincia, this.municipio, this.distrito).then((e) => {
+                this.clientes = e;
+                this.clientesSinFiltrar = e;
+                if (e && e.length > 0) {
+                    this.titulo = "Clientes (" + e.length.toString() + ")";
+                } else {
+                    this.titulo = "Clientes";
+                }            
+            });    
+        }
     }
 
     cargarProvincias() {
@@ -126,13 +139,19 @@ export class ClientesComponent {
     loadData(){
         this.service.getUsuario().then((u)=>{
             this.usuario = u;
-            var provinciaEncontrada = this.provincias.find(x=>x.$key === this.usuario.ultimaProvincia);
-            if (provinciaEncontrada) {
-                this.provincia = provinciaEncontrada;
-            } else {
-                this.provincia = this.provincias[0];
+            if (!this.vendedorFiltro) {
+                this.vendedorFiltro=this.usuario.vendedor;
             }
-            
+            if (this.mostrarTodos) {
+                this.cargarClientes();
+            } else {
+                var provinciaEncontrada = this.provincias.find(x=>x.$key === this.usuario.ultimaProvincia);
+                if (provinciaEncontrada) {
+                    this.provincia = provinciaEncontrada;
+                } else {
+                    this.provincia = this.provincias[0];
+                }    
+            }
         })
     }
     
@@ -179,6 +198,13 @@ export class ClientesComponent {
         this.vendedor = vendedor;
     }
 
+    seleccionarVendedorFiltro(evento: any) {
+        this.service.getVendedor(evento).then(v => {
+            this.vendedorFiltro = v;
+            this.loadData();
+        })
+    }
+    
     crearCliente() {
         this.mostrarDetalle = true;
     }

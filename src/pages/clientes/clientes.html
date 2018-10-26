@@ -10,7 +10,12 @@
 </ion-header>
  
 <ion-content padding>
-  <ion-list>
+  <ion-item *ngIf="usuario && usuario.nivelDeAcceso=='admin'">
+    <ion-label>Mostrar todos</ion-label>
+    <ion-toggle [(ngModel)]="mostrarTodos"></ion-toggle>
+  </ion-item>
+  
+  <ion-list *ngIf="!mostrarTodos">
     <ion-item>
       <ion-label floating>Provincia:</ion-label>
       <ion-select [(ngModel)]="provincia">
@@ -54,9 +59,14 @@
     <ion-item *ngIf="mostrarDetalle">
         <button type="button" [disabled]="!botonActivo" (click)="addMessage()" ion-button full>Guardar</button>
     </ion-item>
-</ion-list>
+
+  </ion-list>
  
   <ion-list>
+    <ion-item *ngIf="mostrarTodos && usuario && usuario.nivelDeAcceso=='admin'">
+        <selector-vendedores etiqueta="Vendedor:" [seleccionado]="vendedorFiltro.id" (seleccionar)="seleccionarVendedorFiltro($event)"></selector-vendedores>
+    </ion-item>
+
     <ion-searchbar #barra placeholder="Introduzca algún dato del cliente" (ionInput)="filtrarBusqueda($event)" (ionClear)="resetearFiltros()" (ionFocus)="seleccionarTexto($event)"></ion-searchbar>
     
     <ion-item-sliding *ngFor="let cliente of clientes">
@@ -89,7 +99,7 @@
     </ion-item-sliding>
   </ion-list>
 
-  <ion-fab *ngIf="!isEditing && municipio && distrito" right bottom (click)="crearCliente()">
+  <ion-fab *ngIf="!isEditing && !mostrarTodos && municipio && distrito" right bottom (click)="crearCliente()">
     <button ion-fab><ion-icon name="add"></ion-icon></button>
   </ion-fab>
 

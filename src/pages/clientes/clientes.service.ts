@@ -11,26 +11,39 @@ export class ClientesService {
     this.db = firebase.firestore();
   }
 
-  getAllClientes(provincia: any, municipio: any, distrito: any): Promise<any> {
-      var refDistrito:any;
-      if (distrito) {
-          refDistrito = this.db.collection("provincias").doc(provincia.$key).collection("municipios").doc(municipio.$key).collection("distritos").doc(distrito.$key);
-      }
-      
-  return new Promise((resolve, reject) => {
-      if (!distrito) {
-          resolve(null);
-      }
-      this.db.collection("clientes")
-        //.where('provincia','==', provincia.$key)
-        .where('distrito', '==', refDistrito)
-        .get()
+    getClientesDistrito(provincia: any, municipio: any, distrito: any): Promise<any> {
+        var refDistrito:any;
+        if (distrito) {
+            refDistrito = this.db.collection("provincias").doc(provincia.$key).collection("municipios").doc(municipio.$key).collection("distritos").doc(distrito.$key);
+        }
+
+        if (!distrito) {
+            return this.getClientes(null);
+        }
+        var refClientes = this.db.collection("clientes").where('distrito', '==', refDistrito);
+
+        return this.getClientes(refClientes);
+    }
+
+    getClientesVendedor(vendedor: any): Promise<any> {
+        if (!vendedor) {
+            return this.getClientes(null);
+        }
+        var refClientes = this.db.collection("clientes").where('vendedor', '==', vendedor);
+
+        return this.getClientes(refClientes);
+    }
+
+    getClientes(refClientes: any): Promise<any> {
+        return new Promise((resolve, reject) => {
+        if(!refClientes) {
+            resolve(null);
+        }
+        refClientes.get()
         .then((querySnapshot) => {
             let arr = [];
             querySnapshot.forEach(function (doc) {
                 var obj = doc.data();
-                //var data_stringify = JSON.stringify(data);
-                //var obj = JSON.parse(data_stringify);
                 obj.$key = doc.id
                 console.log(obj)
                 arr.push(obj);
@@ -54,22 +67,21 @@ export class ClientesService {
             
                 return 0;
             });
-
               
-              if (arr.length > 0) {
-                  console.log("Document data:", arr);
-                  resolve(arr);
-              } else {
-                  console.log("No such document!");
-                  resolve(null);
-              }
-              
-          })
-          .catch((error: any) => {
-              reject(error);
-          });
-      });
-  }
+            if (arr.length > 0) {
+                console.log("Document data:", arr);
+                resolve(arr);
+            } else {
+                console.log("No such document!");
+                resolve(null);
+            }
+            
+        })
+        .catch((error: any) => {
+            reject(error);
+        });
+        });
+    } 
 
   getDistritos(collection: string): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -226,4 +238,25 @@ export class ClientesService {
             });
         });
     }
+
+    getVendedor(vendedorId: string): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.db.collection("vendedores").doc(vendedorId)
+            .get()
+            .then(doc => {
+                if (doc.exists) {
+                    console.log("Document data:", doc.data());
+                    resolve(doc.ref);
+                } else {
+                    // doc.data() will be undefined in this case
+                    console.log("No such document!");
+                    reject(doc);
+                }
+            }).catch(function(error) {
+                console.log("Error getting document:", error);
+                reject(error);
+            });
+        })
+    }
+
 }
