@@ -24,6 +24,7 @@ export class ClientesComponent {
   usuario: any;
   botonActivo: boolean = true;
   titulo: string = "Clientes";
+  fechaMinima: firebase.firestore.Timestamp;
 
   _provincia: any;
   get provincia(): any {
@@ -54,6 +55,7 @@ export class ClientesComponent {
 
   constructor(public navCtrl: NavController, private mainService: MainService,
         private service: ClientesService) {
+        this.fechaMinima = service.FECHA_MINIMA;            
     this.cargarProvincias();
     this.loadData();
   }

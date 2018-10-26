@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase';
-//import 'firebase/firestore';
 
 @Injectable()
 export class ClientesService {
 
     private db: any;
+    public FECHA_MINIMA: firebase.firestore.Timestamp = new firebase.firestore.Timestamp(0,0);
 
   constructor() { 
     this.db = firebase.firestore();
@@ -38,10 +38,10 @@ export class ClientesService {
 
             arr = arr.sort((obj1, obj2) => {
                 if (obj1.ultimaVisita == null) {
-                    obj1.ultimaVisita = obj1.fechaCreacion;
+                    obj1.ultimaVisita = this.FECHA_MINIMA;
                 }
                 if (obj2.ultimaVisita == null) {
-                    obj2.ultimaVisita = obj2.fechaCreacion;
+                    obj2.ultimaVisita = this.FECHA_MINIMA;
                 }
 
                 if (obj1.ultimaVisita > obj2.ultimaVisita) {

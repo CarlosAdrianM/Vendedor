@@ -65,7 +65,8 @@
         <p>{{cliente.direccion}}</p>
         <p *ngIf="cliente.email">Email: {{cliente.email}}</p>
         <p *ngIf="cliente.comentarios">Comentarios: {{cliente.comentarios}}</p>
-        <p *ngIf="cliente.ultimaVisita">Última Visita: {{cliente.ultimaVisita.toDate() | date:datelocale}}</p>
+        <p *ngIf="cliente.ultimaVisita != fechaMinima">Última Visita: {{cliente.ultimaVisita.toDate() | date:datelocale}}</p>
+        <p *ngIf="cliente.ultimaVisita == fechaMinima"><strong>Última Visita: ¡NUNCA!</strong></p>
       </ion-item>
       <ion-item-options>
         <button ion-button color="danger" (click)="deleteMessage(cliente.$key)">
