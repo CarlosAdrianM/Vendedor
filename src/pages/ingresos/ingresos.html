@@ -68,13 +68,21 @@
             <ion-label><strong>Total mes</strong></ion-label>
             <p item-right>{{model.sumaIngresos | currency:'DOP'}}</p>
         </ion-item>
-        <ion-item *ngIf="comision">
-            <ion-label>Comision</ion-label>
-            <p item-right>{{comision | currency:'DOP'}}</p>
+        <ion-item *ngIf="comision" color="secondary">
+            <ion-label><strong>Comision</strong></ion-label>
+            <p item-right><strong>{{comision | currency:'DOP'}}</strong></p>
         </ion-item>
         <ion-item *ngIf="model.sumaIngresos">
             <ion-label>Falta para salto</ion-label>
             <p item-right>{{faltaParaSalto | currency:'DOP'}}</p>
+        </ion-item>
+        <ion-item *ngIf="model.sumaIngresosMesPasado">
+            <ion-label>Total mes pasado</ion-label>
+            <p item-right>{{model.sumaIngresosMesPasado | currency:'DOP'}}</p>
+        </ion-item>
+        <ion-item *ngIf="model.sumaIngresosMesPasado">
+            <ion-label>Comision Mes Pasado</ion-label>
+            <p item-right>{{comisionMesPasado | currency:'DOP'}}</p>
         </ion-item>
     </ion-list>
 </ion-content>

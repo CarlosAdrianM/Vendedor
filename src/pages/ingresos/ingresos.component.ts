@@ -15,6 +15,7 @@ export class IngresosComponent {
   usuario: any;
   botonActivo: boolean = false;
   comision: number;
+  comisionMesPasado: number;
   faltaParaSalto: number;
   private hoy: Date = new Date();
   private hoySinHora: Date = new Date(this.hoy.getFullYear(), this.hoy.getMonth(), this.hoy.getDate(), 0, 0, 0, 0);
@@ -49,16 +50,27 @@ export class IngresosComponent {
         this.service.getIngresosVendedor(this.vendedor).then((e)=>{
             this.ingresos = e;
             var date = new Date();
-            var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+            var diaUnoDelMes = new Date(date.getFullYear(), date.getMonth(), 1);
+            var diaUnoMesPasado = diaUnoDelMes;
+            diaUnoMesPasado.setMonth(diaUnoDelMes.getMonth()-1);
             this.model.sumaIngresos = 0;
+            this.model.sumaIngresosMesPasado = 0;
             if(this.ingresos) {
                 for (var i of this.ingresos) {
-                    if (i.fecha < firstDay) {
+                    if (i.fecha < diaUnoMesPasado) {
                         break;
                     }
-                    this.model.sumaIngresos += i.importe;
-                    this.calcularComisiones(this.model.sumaIngresos);
+                    if (i.fecha < diaUnoDelMes) {
+                        this.model.sumaIngresosMesPasado += i.importe;
+                    } else {
+                        this.model.sumaIngresos += i.importe;
+                    }
                 };
+                var tramo = this.calcularComisiones(this.model.sumaIngresos);
+                this.comision = tramo.comision;
+                this.faltaParaSalto = tramo.faltaParaSalto;
+                var tramoMesPasado = this.calcularComisiones(this.model.sumaIngresosMesPasado);
+                this.comisionMesPasado = tramoMesPasado.comision;
             }
         });
         this.service.getCobrosPendientes(this.vendedor).then((d)=> {
@@ -74,23 +86,20 @@ export class IngresosComponent {
         })
     }
 
-    calcularComisiones(sumaIngresos: number): void {
+    calcularComisiones(sumaIngresos: number): any {
+        var tramo = {comision: 0, faltaParaSalto: 0};
         if (sumaIngresos < 65000) {
-            this.comision = 0;
-            this.faltaParaSalto = 65000 - sumaIngresos;
+            tramo = {comision: 0, faltaParaSalto: 65000 - sumaIngresos};
         } else if (sumaIngresos < 85000) {
-            this.comision = sumaIngresos * 0.05;
-            this.faltaParaSalto = 85000 -sumaIngresos;
+            tramo = {comision: sumaIngresos * 0.05, faltaParaSalto: 85000 - sumaIngresos};
         } else if (sumaIngresos < 130000) {
-            this.comision = sumaIngresos * 0.06;
-            this.faltaParaSalto = 130000 -sumaIngresos;
+            tramo = {comision: sumaIngresos * 0.06, faltaParaSalto: 130000 - sumaIngresos};
         } else if (sumaIngresos < 200000) {
-            this.comision = sumaIngresos * 0.07;
-            this.faltaParaSalto = 200000 -sumaIngresos;
+            tramo = {comision: sumaIngresos * 0.07, faltaParaSalto: 200000 - sumaIngresos};
         } else {
-            this.comision = sumaIngresos * 0.08;
-            this.faltaParaSalto = 0;
+            tramo = {comision: sumaIngresos * 0.08, faltaParaSalto: 0};
         }
+        return tramo;
     }
         
     addIngreso(){
