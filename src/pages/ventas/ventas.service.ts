@@ -44,7 +44,8 @@ export class VentasService {
 
   getLineas(ventaId: string): Promise<any> {
     return new Promise((resolve, reject) => {
-        this.db.collection("ventas").doc(ventaId).collection("lineas")
+        this.db.collection("lineasVenta")
+            .where('ventaId','==',ventaId)
             .get()
             .then((querySnapshot) => {
                 let arr = [];
@@ -107,7 +108,12 @@ export class VentasService {
             lineas.forEach(l => {
                 l.precio = +l.precio;
                 l.cantidad = +l.cantidad;
-                var lineaRef = this.db.collection("ventas").doc(ventaRef.id).collection("lineas").doc();
+                l.ventaId = ventaRef.id;
+                l.usuario = dataObj.usuario;
+                l.fechaCreacion = dataObj.fechaCreacion;
+                l.vendedor = dataObj.vendedor;
+                l.cliente = dataObj.cliente;
+                var lineaRef = this.db.collection("lineasVenta").doc();
                 batch.set(lineaRef, l);
                 var productoRef = this.db.collection("productos").doc(l.producto);
                 productoRef.get().then(prod => {
@@ -164,4 +170,36 @@ export class VentasService {
             });
         });
     }
+    /*
+    getVentasTmp() {
+        var refLineasVenta = this.db.collection("lineasVenta");
+        this.db.collection("ventas").get().then(vta => {
+            vta.forEach(v => {
+                this.db.collection("ventas").doc(v.id).collection("lineas")
+                .get()
+                .then((querySnapshot) => {
+                    querySnapshot.forEach(function (doc) {
+                        var obj = doc.data();
+                        obj.ventaId = v.id;
+                        if (v.usuario) {
+                            obj.usuario = v.usuario;
+                        }
+                        if (v.fechaCreacion) {
+                            obj.fechaCreacion = v.fechaCreacion;
+                        }
+                        if (v.vendedor) {
+                            obj.vendedor = v.vendedor;
+                        }
+                        if (v.cliente) {
+                            obj.cliente = v.cliente;
+                        }
+                        refLineasVenta.doc(doc.id).set(obj).then(o => {
+                            console.log(obj);
+                        })
+                    });
+                })
+            })
+        })
+    }
+    */
 }
