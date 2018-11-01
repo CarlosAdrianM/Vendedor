@@ -51,16 +51,16 @@ export class IngresosComponent {
             this.ingresos = e;
             var date = new Date();
             var diaUnoDelMes = new Date(date.getFullYear(), date.getMonth(), 1);
-            var diaUnoMesPasado = diaUnoDelMes;
+            var diaUnoMesPasado = new Date(date.getFullYear(), date.getMonth(), 1);
             diaUnoMesPasado.setMonth(diaUnoDelMes.getMonth()-1);
             this.model.sumaIngresos = 0;
             this.model.sumaIngresosMesPasado = 0;
             if(this.ingresos) {
                 for (var i of this.ingresos) {
-                    if (i.fecha < diaUnoMesPasado) {
+                    if (i.fecha.toDate() < diaUnoMesPasado) {
                         break;
                     }
-                    if (i.fecha < diaUnoDelMes) {
+                    if (i.fecha.toDate() < diaUnoDelMes) {
                         this.model.sumaIngresosMesPasado += i.importe;
                     } else {
                         this.model.sumaIngresos += i.importe;
