@@ -54,7 +54,7 @@
                 <p *ngIf="visita.clienteDireccion">{{visita.clienteDireccion}}</p>
                 <p *ngIf="cliente">Fecha: {{visita.fecha.toDate() | date:locale}}</p>
                 <h3>Nivel de interés: {{visita.nivelInteres}}</h3>
-                <p *ngIf="visita.comentarios">{{visita.comentarios}}</p>
+                <p text-wrap *ngIf="visita.comentarios">{{visita.comentarios}}</p>
             </ion-item>
             <ion-item-options>
                 <button ion-button color="danger" (click)="deleteMessage(visita.$key)">

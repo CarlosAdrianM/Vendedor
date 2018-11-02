@@ -55,10 +55,10 @@
     </ion-card>
     <ion-list>
         <ion-item-sliding *ngFor="let ingreso of ingresos">
-            <ion-item>
+            <ion-item class="item item-text-wrap">
                 <p>Fecha: {{ingreso.fecha.toDate() | date:locale}}</p>
                 <h3>Importe: {{ingreso.importe | currency:'DOP'}}</h3>
-                <p *ngIf="ingreso.comentarios">{{ingreso.comentarios}}</p>
+                <p  text-wrap *ngIf="ingreso.comentarios">{{ingreso.comentarios}}</p>
             </ion-item>
             <ion-item-options>
 
@@ -69,7 +69,7 @@
             <p item-right>{{model.sumaIngresos | currency:'DOP'}}</p>
         </ion-item>
         <ion-item *ngIf="comision" color="secondary">
-            <ion-label><strong>Comision</strong></ion-label>
+            <ion-label><strong>Comisión</strong></ion-label>
             <p item-right><strong>{{comision | currency:'DOP'}}</strong></p>
         </ion-item>
         <ion-item *ngIf="model.sumaIngresos">
@@ -81,7 +81,7 @@
             <p item-right>{{model.sumaIngresosMesPasado | currency:'DOP'}}</p>
         </ion-item>
         <ion-item *ngIf="model.sumaIngresosMesPasado">
-            <ion-label>Comision Mes Pasado</ion-label>
+            <ion-label>Comisión Mes Pasado</ion-label>
             <p item-right>{{comisionMesPasado | currency:'DOP'}}</p>
         </ion-item>
     </ion-list>

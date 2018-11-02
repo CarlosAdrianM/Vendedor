@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, LoadingController } from 'ionic-angular';
 import { MainService } from '../../app/main.service';
 import { ClientesService } from './clientes.service';
 import { VisitasComponent } from '../visitas/visitas.component';
@@ -26,7 +26,7 @@ export class ClientesComponent {
   botonActivo: boolean = true;
   titulo: string = "Clientes";
   fechaMinima: firebase.firestore.Timestamp;
-  mostrarTodos: boolean = false;
+  loading: any;
 
   _provincia: any;
   get provincia(): any {
@@ -55,8 +55,17 @@ export class ClientesComponent {
       this.cargarClientes();
   }
 
+  _mostrarTodos: boolean = false;
+  get mostrarTodos(): boolean {
+      return this._mostrarTodos;
+  }
+  set mostrarTodos(value: boolean) {
+      this._mostrarTodos = value;
+      this.cargarClientes();
+  }
+
   constructor(public navCtrl: NavController, private mainService: MainService,
-        private service: ClientesService) {
+        private service: ClientesService, public loadingCtrl: LoadingController) {
         this.fechaMinima = service.FECHA_MINIMA;            
     this.cargarProvincias();
     this.loadData();
@@ -69,27 +78,34 @@ export class ClientesComponent {
   }
 
     private cargarClientes() {
-        if (this.mostrarTodos) {
-            this.service.getClientesVendedor(this.vendedorFiltro).then((e) => {
-                this.clientes = e;
-                this.clientesSinFiltrar = e;
-                if (e && e.length > 0) {
-                    this.titulo = "Clientes (" + e.length.toString() + ")";
-                } else {
-                    this.titulo = "Clientes";
-                }            
-            });
-        } else {
-            this.service.getClientesDistrito(this.provincia, this.municipio, this.distrito).then((e) => {
-                this.clientes = e;
-                this.clientesSinFiltrar = e;
-                if (e && e.length > 0) {
-                    this.titulo = "Clientes (" + e.length.toString() + ")";
-                } else {
-                    this.titulo = "Clientes";
-                }            
-            });    
-        }
+        this.loading = this.loadingCtrl.create({
+            content: 'Cargando clientes...'
+        });
+        this.loading.present().then(()=>{
+            if (this.mostrarTodos) {
+                this.service.getClientesVendedor(this.vendedorFiltro).then((e) => {
+                    this.clientes = e;
+                    this.clientesSinFiltrar = e;
+                    if (e && e.length > 0) {
+                        this.titulo = "Clientes (" + e.length.toString() + ")";
+                    } else {
+                        this.titulo = "Clientes";
+                    }
+                    this.loading.dismiss();
+                });
+            } else {
+                this.service.getClientesDistrito(this.provincia, this.municipio, this.distrito).then((e) => {
+                    this.clientes = e;
+                    this.clientesSinFiltrar = e;
+                    if (e && e.length > 0) {
+                        this.titulo = "Clientes (" + e.length.toString() + ")";
+                    } else {
+                        this.titulo = "Clientes";
+                    }
+                    this.loading.dismiss();
+                });    
+            }
+        })
     }
 
     cargarProvincias() {
