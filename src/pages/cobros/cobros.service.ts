@@ -94,14 +94,24 @@ export class CobrosService {
         tr.set(cobroRef, dataObj);
         var usuarioRef = this.db.collection("usuarios").doc(dataObj.usuario);
         usuarioRef.get().then(u => {
-            var vendedorRef = u.data().vendedor;
-            vendedorRef.get().then(v =>{
-                var cobroVendedorRef = vendedorRef.collection("cobrosPendientesIngreso").doc(cobroRef.id);
-                tr.set(cobroVendedorRef, {cobro: cobroRef, importe: +sumaImporte, fecha: dataObj.fechaCreacion});
-                resolve(v);
-            }).catch((error: any) => {
-                reject(error);
-            });
+            var clienteCapacitacionRef = this.db.collection("clientesCapacitacion").doc(dataObj.cliente);
+            clienteCapacitacionRef.get().then(c => {
+                if (!c.exists) {
+                    tr.set(clienteCapacitacionRef, {cliente: dataObj.cliente, importeCobrado: +dataObj.importeCobrado, clienteNombre: dataObj.clienteNombre, clienteDireccion: dataObj.clienteDireccion, vendedor: dataObj.vendedor, usuario: dataObj.usuario, fechaCreacion: dataObj.fechaCreacion})
+                } else {
+                    var capacitacion = c.data();
+                    var nuevoImporte: number = +dataObj.importeCobrado + capacitacion.importeCobrado ;
+                    tr.set(clienteCapacitacionRef, {importeCobrado: +nuevoImporte}, {merge: true});
+                }
+                var vendedorRef = u.data().vendedor;
+                vendedorRef.get().then(v =>{
+                    var cobroVendedorRef = vendedorRef.collection("cobrosPendientesIngreso").doc(cobroRef.id);
+                    tr.set(cobroVendedorRef, {cobro: cobroRef, importe: +sumaImporte, fecha: dataObj.fechaCreacion});
+                    resolve(v);
+                }).catch((error: any) => {
+                    reject(error);
+                });
+            })
         });
     }
 

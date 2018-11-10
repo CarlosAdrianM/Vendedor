@@ -9,6 +9,7 @@ import firebase from 'firebase';
 import { IngresosComponent } from '../pages/ingresos/ingresos.component';
 import { CobrosComponent } from '../pages/cobros/cobros.component';
 import { VisitasComponent } from '../pages/visitas/visitas.component';
+import { CapacitacionComponent } from '../pages/capacitacion/capacitacion.component';
 
 @Component({
   templateUrl: 'app.html'
@@ -63,6 +64,7 @@ export class MyApp implements OnInit {
       //{ title: 'Productos', component: ProductosComponent },
       { title: 'Deudas', component: CobrosComponent},
       { title: 'Ingresos', component: IngresosComponent },
+      { title: 'Capacitación 2019', component: CapacitacionComponent },
       { title: 'Login', component: LoginPage }
     ];
   }

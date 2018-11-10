@@ -89,8 +89,10 @@ export class ClientesService {
             var refColeccionClientes;
             if (u.nivelDeAcceso == 'admin') {
                 refColeccionClientes = this.db.collection(collection);
-            } else {
+            } else if (u.vendedor) {
                 refColeccionClientes = this.db.collection(collection).where('vendedor','==',u.vendedor);
+            } else {
+                return;
             }
             
             refColeccionClientes.get()

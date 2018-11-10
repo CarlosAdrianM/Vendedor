@@ -1,0 +1,6 @@
+<ion-item *ngIf="!seleccionado" (click)="abrirProductos()">
+    <label><em>Seleccionar un producto...</em></label>
+    </ion-item>
+<ion-item *ngIf="seleccionado" (click)="abrirProductos()">
+    <label>{{ seleccionado.nombre }}</label>
+</ion-item>

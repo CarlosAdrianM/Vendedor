@@ -52,10 +52,15 @@ export class VisitasService {
       fechaInicial.setDate(fechaInicial.getDate()-1);
       var coleccionClientes = this.db.collection("clientes");
     return new Promise((resolve, reject) => {
+        if (!vendedor || !vendedor.id) {
+            resolve(null);
+        }
         this.db.collection("visitas")
         .where('vendedor', '==', vendedor.id)
         .where('fecha', '>', fechaInicial)
         .where('fecha', '<', fechaFinal)
+        .orderBy('fecha')
+        .orderBy("fechaCreacion","desc")
         .get()
         .then((querySnapshot) => {
             let arr = [];

@@ -22,6 +22,7 @@
                 <ion-select class="full-width" [(ngModel)]="linea.producto">
                     <ion-option *ngFor="let producto of productos" (ionSelect)="seleccionarProducto(linea, producto)" value="{{producto.$key}}">{{producto.nombre}}</ion-option>
                 </ion-select>
+                <!--selector-productos-mini (seleccionado)="linea.producto" (seleccionar)="seleccionarProducto(linea, $event)"></selector-productos-mini-->
             </ion-col>
             <ion-col col-2><ion-input type="number" [(ngModel)]="linea.cantidad"></ion-input></ion-col>
             <ion-col col-3><ion-input type="text" [(ngModel)]="linea.precio"></ion-input></ion-col>

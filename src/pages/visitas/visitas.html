@@ -53,6 +53,7 @@
                 <p *ngIf="visita.clienteNombre"><strong>{{visita.clienteNombre}}</strong></p>
                 <p *ngIf="visita.clienteDireccion">{{visita.clienteDireccion}}</p>
                 <p *ngIf="cliente">Fecha: {{visita.fecha.toDate() | date:locale}}</p>
+                <p *ngIf="!cliente">Hora: {{visita.fechaCreacion.toDate() | date:'short'}}</p>
                 <h3>Nivel de interés: {{visita.nivelInteres}}</h3>
                 <p text-wrap *ngIf="visita.comentarios">{{visita.comentarios}}</p>
             </ion-item>
@@ -67,6 +68,12 @@
                 </button>
             </ion-item-options>
         </ion-item-sliding>
+        <ion-item *ngIf="!visitas && !cargando">
+            <p>No hay visitas en ese día</p>
+        </ion-item>
+        <ion-item *ngIf="cargando">
+                <p>Cargando visitas...</p>
+        </ion-item>
     </ion-list>
   
 </ion-content>

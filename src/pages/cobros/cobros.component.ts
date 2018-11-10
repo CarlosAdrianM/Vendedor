@@ -65,6 +65,9 @@ export class CobrosComponent {
                     this.loading.dismiss();
                     return;
                 }
+                this.model.clienteDireccion = d[0].clienteDireccion;
+                this.model.clienteNombre = d[0].clienteNombre;
+                this.model.vendedor = this.vendedor;
                 this.totalDeuda = 0;
                 this.totalDeudaEntregada = 0;
                 this.totalDeudaSinEntregar = 0;

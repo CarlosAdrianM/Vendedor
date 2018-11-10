@@ -20,6 +20,7 @@ export class VisitasComponent {
   private hoySinHora: Date = new Date(this.hoy.getFullYear(), this.hoy.getMonth(), this.hoy.getDate(), 0, 0, 0, 0);
   fechaFiltro: string =  this.hoySinHora.toISOString();
   titulo: string = "Visitas";
+  cargando: boolean = false;
 
   get textoGuia() {
       var texto: string;
@@ -63,9 +64,11 @@ export class VisitasComponent {
     loadData(){
         this.model.nivelInteres = "0";
         this.model.comentarios = '';
+        this.cargando = true;
         if (this.cliente) {
             this.service.getVisitasCliente(this.cliente).then((e)=>{
                 this.visitas = e;
+                this.cargando = false;
             });    
         } else {
             this.service.getVisitasVendedorFecha(this.vendedor, this.fechaFiltro).then((e)=>{
@@ -75,6 +78,7 @@ export class VisitasComponent {
                 } else {
                     this.titulo = "Visitas";
                 }
+                this.cargando = false;
             })
         }
     }

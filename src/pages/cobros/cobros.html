@@ -42,7 +42,7 @@
         </ion-item>
     </ion-list>
 
-    <ion-item *ngIf="usuario && usuario.nivelDeAcceso=='admin'">
+    <ion-item *ngIf="usuario && (usuario.nivelDeAcceso=='admin' || usuario.nivelDeAcceso=='almacen')">
         <selector-vendedores etiqueta="Vendedor:" [seleccionado]="vendedor" (seleccionar)="seleccionarVendedor($event)"></selector-vendedores>
     </ion-item>
 

@@ -12,21 +12,26 @@ import { ClientesService } from '../pages/clientes/clientes.service';
 import { AuthProvider } from '../providers/auth/auth';
 import { LoginPage } from '../pages/login/login';
 import { VendedoresComponent } from '../pages/vendedores/vendedores.component';
-import { SelectorVendedoresComponent } from '../components/SelectorVendedores/SelectorVendedores.component';
-import { SelectorVendedoresService } from '../components/SelectorVendedores/SelectorVendedores.service';
 import { VisitasComponent } from '../pages/visitas/visitas.component';
 import { VisitasService } from '../pages/visitas/visitas.service';
 import { VentasComponent } from '../pages/ventas/ventas.component';
 import { VentasService } from '../pages/ventas/ventas.service';
-//import { ProductosComponent } from '../pages/productos/productos.component';
-
-import { registerLocaleData } from '@angular/common';
-import localeEsDo from '@angular/common/locales/es-DO';
-import localeEsDoExtra from '@angular/common/locales/extra/es-DO';
 import { CobrosComponent } from '../pages/cobros/cobros.component';
 import { CobrosService } from '../pages/cobros/cobros.service';
 import { IngresosComponent } from '../pages/ingresos/ingresos.component';
 import { IngresosService } from '../pages/ingresos/ingresos.service';
+import { CapacitacionComponent } from '../pages/capacitacion/capacitacion.component';
+import { CapacitacionService } from '../pages/capacitacion/capacitacion.service';
+
+import { SelectorVendedoresComponent } from '../components/SelectorVendedores/SelectorVendedores.component';
+import { SelectorVendedoresService } from '../components/SelectorVendedores/SelectorVendedores.service';
+import { SelectorProductosComponent } from '../components/SelectorProductos/SelectorProductos.component';
+import { SelectorProductosService } from '../components/SelectorProductos/SelectorProductos.service';
+import { SelectorProductosMiniComponent } from '../components/SelectorProductosMini/SelectorProductosMini.component';
+
+import { registerLocaleData } from '@angular/common';
+import localeEsDo from '@angular/common/locales/es-DO';
+import localeEsDoExtra from '@angular/common/locales/extra/es-DO';
 
 registerLocaleData(localeEsDo, localeEsDoExtra);
 
@@ -36,12 +41,15 @@ registerLocaleData(localeEsDo, localeEsDoExtra);
     ClientesComponent,
     LoginPage,
     VendedoresComponent,
-    SelectorVendedoresComponent,
     VisitasComponent,
     VentasComponent,
   //  ProductosComponent,
     CobrosComponent,
-    IngresosComponent
+    IngresosComponent,
+    CapacitacionComponent,
+    SelectorVendedoresComponent,
+    SelectorProductosComponent,
+    SelectorProductosMiniComponent
   ],
   imports: [
     BrowserModule,
@@ -53,12 +61,14 @@ registerLocaleData(localeEsDo, localeEsDoExtra);
     ClientesComponent,
     LoginPage,
     VendedoresComponent,
-    SelectorVendedoresComponent,
     VisitasComponent,
     VentasComponent,
-//    ProductosComponent,
     CobrosComponent,
-    IngresosComponent
+    IngresosComponent,
+    CapacitacionComponent,
+    SelectorVendedoresComponent,
+    SelectorProductosComponent,
+    SelectorProductosMiniComponent
   ],
   providers: [
     MainService,
@@ -68,11 +78,13 @@ registerLocaleData(localeEsDo, localeEsDoExtra);
     { provide: LOCALE_ID, useValue: 'es-DO' },
     AuthProvider,
     ClientesService,
-    SelectorVendedoresService,
     VisitasService,
     VentasService,
     CobrosService,
-    IngresosService
+    IngresosService,
+    CapacitacionService,
+    SelectorVendedoresService,
+    SelectorProductosService
   ]
 })
 export class AppModule {}
