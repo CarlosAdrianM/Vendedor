@@ -17,19 +17,22 @@
         </ion-item>
     </ion-list>
 
+    <ion-item>
+        <h2>Faltan {{diasQueFaltan}} días...</h2>
+    </ion-item>
+
     <ion-card *ngFor="let cliente of clientes">
-        <ion-item>
-            <ion-label>Nombre:</ion-label>
-            <p *ngIf="cliente.clienteNombre" item-right><strong>{{cliente.clienteNombre}}</strong></p>
-        </ion-item>
-        <ion-item>
-            <ion-label>Dirección:</ion-label>
-            <p *ngIf="cliente.clienteDireccion" item-right>{{cliente.clienteDireccion}}</p>
-        </ion-item>
-        <ion-item>
-            <ion-label>Importe cobrado:</ion-label>
-            <p item-right>{{cliente.importeCobrado | currency:'DOP'}}</p>
-        </ion-item>
+        <ion-card-header>
+            <p *ngIf="cliente.clienteNombre"><strong>{{cliente.clienteNombre}}</strong></p>
+            <p *ngIf="cliente.clienteDireccion">{{cliente.clienteDireccion}}</p>
+        </ion-card-header>
+        <ion-card-content>
+            <ion-item *ngIf="cliente" [color]="cliente.importeCobrado >= 25000 ? 'secondary' : null">
+                <ion-label>Importe cobrado:</ion-label>
+                <p item-right>{{cliente.importeCobrado | currency:'DOP'}}</p>
+            </ion-item>
+            <ion-range min="0" max="25000" disabled [(ngModel)]="cliente.importeCobrado"></ion-range>
+        </ion-card-content>
     </ion-card>
     <ion-item *ngIf="!clientes && !cargando">
         <p text-wrap>Todavía no hay ningún cliente candidato a la capacitación</p>

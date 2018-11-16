@@ -35,7 +35,7 @@ export class CapacitacionService {
                 console.log(obj)
                 arr.push(obj);
             });
-
+/*
             arr = arr.sort((obj1, obj2) => {
 
                 if (obj1.importeCobrado > obj2.importeCobrado) {
@@ -48,7 +48,7 @@ export class CapacitacionService {
             
                 return 0;
             });
-              
+*/              
             if (arr.length > 0) {
                 console.log("Document data:", arr);
                 resolve(arr);

@@ -12,6 +12,9 @@ export class CapacitacionComponent {
     clientes: any;
     titulo: string;
     usuario: any;
+    hoy: Date = new Date();
+    fechaCapacitacion: Date = new Date(2019, 2, 28);
+    diasQueFaltan: number;
 
     constructor(private service: CapacitacionService, public loadingCtrl: LoadingController) {
         this.service.getUsuario().then((u)=>{
@@ -21,6 +24,7 @@ export class CapacitacionComponent {
                 this.cargarDatos();
             }
         })
+        this.diasQueFaltan = Math.ceil((this.fechaCapacitacion.getTime() - this.hoy.getTime()) / (1000*60*60*24));
     }
 
     ionViewDidEnter() {
