@@ -71,7 +71,7 @@ export class ClientesComponent {
     this.loadData();
   }
 
-  ionViewDidEnter() {
+  ngOnInit() {
     if (this.distrito) {
         this.cargarClientes();        
     }

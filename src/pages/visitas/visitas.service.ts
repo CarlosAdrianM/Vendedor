@@ -16,6 +16,7 @@ export class VisitasService {
       this.db.collection("visitas")
         //.where('provincia','==', provincia.$key)
         .where('cliente', '==', cliente)
+        .orderBy("fecha", "desc")
         .limit(20)
         .get()
         .then((querySnapshot) => {
