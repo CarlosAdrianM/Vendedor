@@ -184,6 +184,35 @@ finalizarGetCobros(arr, resolve) {
         
 }
 
+// Es para las estadísticas mensuales únicamente
+// igual que el índice creado en ventas -> vendedor ASC, fecha ASC
+getNumeroPedidos(vendedor: string): Promise<any> {
+    var query = this.db.collection("ventas").where('vendedor', '==', vendedor);
+    var fechaInicial= new Date('2018-11-1');
+    var fechaFinal = new Date('2018-12-1');
+    return new Promise((resolve, reject) => {
+      query
+      .where('fecha', '>', fechaInicial)
+      .where('fecha', '<', fechaFinal)
+      .get()
+      .then((querySnapshot) => {
+          var counter = querySnapshot.size;
+        if (counter > 0) {
+            console.log("Numero pedidos:", counter);
+            resolve(counter);
+        } else {
+            console.log("No such document!");
+            resolve(null);
+        }
+
+          })
+          .catch((error: any) => {
+              reject(error);
+          });
+      });
+  }
+
+
 
   getUsuario(): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -221,6 +250,23 @@ finalizarGetCobros(arr, resolve) {
                 .collection("ventas")
                 .doc(docID)
                 .set({entregado: true, fechaEntrega: fechaEntrega}, {merge: true})
+                .then((obj: any) => {
+                    resolve(obj);
+                })
+                .catch((error: any) => {
+                    reject(error);
+                });
+        });
+    }
+    
+    recoger(dataObj: any) {
+        var docID = dataObj.$key;
+        var fechaRecogida = firebase.firestore.Timestamp.now();
+        return new Promise((resolve, reject) => {
+            this.db
+                .collection("ventas")
+                .doc(docID)
+                .set({recogido: true, fechaRecogida: fechaRecogida}, {merge: true})
                 .then((obj: any) => {
                     resolve(obj);
                 })

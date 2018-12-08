@@ -86,7 +86,8 @@ export class CobrosComponent {
                     this.titulo = "Deudas ("+ this.totalDeuda + ")";
                 }
                 this.loading.dismiss();
-            })    
+            });
+            //this.service.getNumeroPedidos(this.vendedor);
         })
     }
         
@@ -100,6 +101,12 @@ export class CobrosComponent {
     entregar(deuda: any) {
         this.service.entregar(deuda).then(()=>{
             deuda.entregado = true;
+        })
+    }
+
+    recoger(deuda: any) {
+        this.service.recoger(deuda).then(()=>{
+            deuda.recogido = true;
         })
     }
 

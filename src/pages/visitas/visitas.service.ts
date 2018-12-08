@@ -51,6 +51,10 @@ export class VisitasService {
       var fechaFinal: Date = new Date(fecha);
       fechaFinal.setDate(fechaInicial.getDate());
       fechaInicial.setDate(fechaInicial.getDate()-1);
+      /*
+      var fechaInicial= new Date('2018-11-1');
+      var fechaFinal = new Date('2018-12-1');
+      */
       var coleccionClientes = this.db.collection("clientes");
     return new Promise((resolve, reject) => {
         if (!vendedor || !vendedor.id) {

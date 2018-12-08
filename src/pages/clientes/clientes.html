@@ -79,10 +79,6 @@
         <p *ngIf="cliente.ultimaVisita == fechaMinima"><strong>Última Visita: ¡NUNCA!</strong></p>
       </ion-item>
       <ion-item-options>
-        <button ion-button color="danger" (click)="deleteMessage(cliente.$key)">
-          <ion-icon name="trash"></ion-icon>
-          borrar
-        </button>
         <button ion-button color="success" (click)="updateMessage(cliente)">
           <ion-icon name="create"></ion-icon>
           editar
