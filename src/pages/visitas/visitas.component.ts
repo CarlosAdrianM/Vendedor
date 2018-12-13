@@ -21,6 +21,7 @@ export class VisitasComponent {
   fechaFiltro: string =  this.hoySinHora.toISOString();
   titulo: string = "Visitas";
   cargando: boolean = false;
+  todoElMes: boolean = false;
 
   get textoGuia() {
       var texto: string;
@@ -71,7 +72,25 @@ export class VisitasComponent {
                 this.cargando = false;
             });    
         } else {
-            this.service.getVisitasVendedorFecha(this.vendedor, this.fechaFiltro).then((e)=>{
+            var fechaInicial = this.fechaFiltro;
+            var fechaFinal = this.fechaFiltro;
+
+            if (this.todoElMes) {
+                var fechaInicialTexto = new Date();
+                fechaInicialTexto.setHours(0);
+                fechaInicialTexto.setMinutes(0);
+                fechaInicialTexto.setSeconds(0);
+                fechaInicialTexto.setDate(1);
+                var fechaFinalTexto = new Date(fechaInicialTexto);
+                fechaFinalTexto.setHours(0);
+                fechaFinalTexto.setMinutes(0);
+                fechaFinalTexto.setSeconds(0);
+                fechaFinalTexto.setMonth(fechaFinalTexto.getMonth()+1);
+                fechaInicial = fechaInicialTexto.toString();
+                fechaFinal = fechaFinalTexto.toString();
+            }
+            
+            this.service.getVisitasVendedorFecha(this.vendedor, fechaInicial, fechaFinal).then((e)=>{
                 this.visitas = e;
                 if (e && e.length > 0) {
                     this.titulo = "Visitas (" + e.length.toString() + ")";

@@ -46,14 +46,22 @@ export class VisitasService {
       });
   }
 
-  getVisitasVendedorFecha(vendedor: any, fecha: string): Promise<any> {
+  getVisitasVendedorFecha(vendedor: any, fecha: string, fechaFin: string): Promise<any> {
+      
       var fechaInicial: Date = new Date(fecha);
-      var fechaFinal: Date = new Date(fecha);
-      fechaFinal.setDate(fechaInicial.getDate());
+      var fechaFinal: Date;
+      if (fechaFin==null || fechaFin=="") {
+        fechaFinal = new Date(fecha);
+        fechaFinal.setDate(fechaInicial.getDate());
+      } else {
+        fechaFinal = new Date(fechaFin);
+        fechaFinal.setDate(fechaFinal.getDate());
+      }
       fechaInicial.setDate(fechaInicial.getDate()-1);
+      
       /*
-      var fechaInicial= new Date('2018-11-1');
-      var fechaFinal = new Date('2018-12-1');
+      var fechaInicial= new Date('2018-12-1');
+      var fechaFinal = new Date('2019-1-1');
       */
       var coleccionClientes = this.db.collection("clientes");
     return new Promise((resolve, reject) => {
