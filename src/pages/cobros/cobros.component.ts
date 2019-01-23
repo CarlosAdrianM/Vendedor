@@ -87,6 +87,7 @@ export class CobrosComponent {
                 }
                 this.loading.dismiss();
             });
+            // Los resultados se ven en la consola
             //this.service.getNumeroPedidos(this.vendedor);
         })
     }

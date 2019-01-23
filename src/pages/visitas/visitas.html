@@ -52,6 +52,13 @@
         </ion-card-header>
     </ion-card>
     <ion-list>
+        <ion-item *ngIf="!visitas && !cargando">
+            <p *ngIf="!todoElMes">No hay visitas en ese día</p>
+            <p *ngIf="todoElMes">No hay visitas en ese mes</p>
+        </ion-item>
+        <ion-item *ngIf="cargando">
+                <p>Cargando visitas...</p>
+        </ion-item>
         <ion-item-sliding *ngFor="let visita of visitas">
             <ion-item>
                 <p *ngIf="visita.clienteNombre"><strong>{{visita.clienteNombre}}</strong></p>
@@ -72,13 +79,6 @@
                 </button>
             </ion-item-options>
         </ion-item-sliding>
-        <ion-item *ngIf="!visitas && !cargando">
-            <p *ngIf="!todoElMes">No hay visitas en ese día</p>
-            <p *ngIf="todoElMes">No hay visitas en ese mes</p>
-        </ion-item>
-        <ion-item *ngIf="cargando">
-                <p>Cargando visitas...</p>
-        </ion-item>
     </ion-list>
   
 </ion-content>

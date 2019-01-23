@@ -76,7 +76,8 @@ export class VisitasComponent {
             var fechaFinal = this.fechaFiltro;
 
             if (this.todoElMes) {
-                var fechaInicialTexto = new Date();
+                this.visitas = [];
+                var fechaInicialTexto = new Date(this.fechaFiltro);
                 fechaInicialTexto.setHours(0);
                 fechaInicialTexto.setMinutes(0);
                 fechaInicialTexto.setSeconds(0);

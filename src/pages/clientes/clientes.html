@@ -71,9 +71,10 @@
     
     <ion-item-sliding *ngFor="let cliente of clientes">
       <ion-item [color]="masDeUnMes(cliente.ultimaVisita) ? 'danger' : null" >
-        <p text-wrap><strong>{{cliente.nombre}}</strong></p>
-        <p text-wrap>{{cliente.direccion}}</p>
-        <p *ngIf="cliente.email">Email: {{cliente.email}}</p>
+        <h3 text-wrap><strong>{{cliente.nombre}}</strong></h3>
+        <p text-wrap><ion-icon name="pin"></ion-icon> {{cliente.direccion}}</p>
+        <p *ngIf="cliente.telefono"><ion-icon name="call"></ion-icon> {{cliente.telefono}}</p>
+        <p *ngIf="cliente.email"><ion-icon name="mail"></ion-icon> {{cliente.email}}</p>
         <p text-wrap *ngIf="cliente.comentarios">Comentarios: {{cliente.comentarios}}</p>
         <p *ngIf="cliente.ultimaVisita != fechaMinima">Última Visita: {{cliente.ultimaVisita.toDate() | date:datelocale}}</p>
         <p *ngIf="cliente.ultimaVisita == fechaMinima"><strong>Última Visita: ¡NUNCA!</strong></p>
