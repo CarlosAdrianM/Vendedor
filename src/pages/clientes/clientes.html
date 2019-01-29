@@ -76,8 +76,8 @@
         <p *ngIf="cliente.telefono"><ion-icon name="call"></ion-icon> {{cliente.telefono}}</p>
         <p *ngIf="cliente.email"><ion-icon name="mail"></ion-icon> {{cliente.email}}</p>
         <p text-wrap *ngIf="cliente.comentarios">Comentarios: {{cliente.comentarios}}</p>
-        <p *ngIf="cliente.ultimaVisita != fechaMinima">Última Visita: {{cliente.ultimaVisita.toDate() | date:datelocale}}</p>
-        <p *ngIf="cliente.ultimaVisita == fechaMinima"><strong>Última Visita: ¡NUNCA!</strong></p>
+        <p *ngIf="cliente.ultimaVisita && cliente.ultimaVisita != fechaMinima">Última Visita: {{cliente.ultimaVisita?.toDate() | date:datelocale}}</p>
+        <p *ngIf="cliente.ultimaVisita && cliente.ultimaVisita == fechaMinima"><strong>Última Visita: ¡NUNCA!</strong></p>
       </ion-item>
       <ion-item-options>
         <button ion-button color="success" (click)="updateMessage(cliente)">

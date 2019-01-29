@@ -234,7 +234,7 @@ export class ClientesComponent {
     }
     
     masDeUnMes(ultimaVisita: firebase.firestore.Timestamp): boolean {
-        if (!ultimaVisita) {
+        if (!ultimaVisita || ultimaVisita === undefined) {
             return false;
         }
         var hoy = new Date();
