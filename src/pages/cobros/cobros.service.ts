@@ -141,9 +141,14 @@ export class CobrosService {
                 //var obj = JSON.parse(data_stringify);
                 obj.$key = doc.id
                 coleccionClientes.doc(obj.cliente).get().then((clienteDoc)=>{
-                    var clienteEntero = clienteDoc.data()
+                    var clienteEntero = clienteDoc.data();
+                    clienteEntero.distrito.get().then((ref) => {
+                        var distrito = ref.data();
+                        obj.clienteDistrito = distrito.nombre;
+                    })
                     obj.clienteNombre = clienteEntero ? clienteEntero.nombre : "";
                     obj.clienteDireccion = clienteEntero ? clienteEntero.direccion : "";
+                    
                     console.log(obj)
                     arr.push(obj);
                     counter--;
@@ -188,8 +193,8 @@ finalizarGetCobros(arr, resolve) {
 // igual que el índice creado en ventas -> vendedor ASC, fecha ASC
 getNumeroPedidos(vendedor: string): Promise<any> {
     var query = this.db.collection("ventas").where('vendedor', '==', vendedor);
-    var fechaInicial= new Date('2019-1-1');
-    var fechaFinal = new Date('2019-2-1');
+    var fechaInicial= new Date('2019-2-1');
+    var fechaFinal = new Date('2019-3-1');
     return new Promise((resolve, reject) => {
       query
       .where('fecha', '>', fechaInicial)

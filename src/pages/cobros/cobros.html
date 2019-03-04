@@ -51,6 +51,7 @@
             <ion-item [color]="masDeUnMes(deuda.fechaUltimoCobro ? deuda.fechaUltimoCobro : deuda.fecha) ? 'danger' : null">
                 <p><strong>Cliente: {{deuda.clienteNombre}}</strong></p>
                 <p>Dirección: {{deuda.clienteDireccion}}</p>
+                <p>Distrito: {{deuda.clienteDistrito}}</p>
                 <p>Fecha: {{deuda.fecha.toDate() | date:locale}}</p>
                 <p>Importe Venta: {{deuda.total | currency:'DOP'}}</p>
                 <p *ngIf="deuda.fechaUltimoCobro">Último cobro: {{deuda.fechaUltimoCobro.toDate() | date:locale}}</p>

@@ -32,6 +32,7 @@ import { SelectorProductosMiniComponent } from '../components/SelectorProductosM
 import { registerLocaleData } from '@angular/common';
 import localeEsDo from '@angular/common/locales/es-DO';
 import localeEsDoExtra from '@angular/common/locales/extra/es-DO';
+import { ProductosComponent } from '../pages/productos/productos.component';
 
 registerLocaleData(localeEsDo, localeEsDoExtra);
 
@@ -43,7 +44,7 @@ registerLocaleData(localeEsDo, localeEsDoExtra);
     VendedoresComponent,
     VisitasComponent,
     VentasComponent,
-    //ProductosComponent,
+    ProductosComponent,
     CobrosComponent,
     IngresosComponent,
     CapacitacionComponent,
@@ -63,7 +64,7 @@ registerLocaleData(localeEsDo, localeEsDoExtra);
     VendedoresComponent,
     VisitasComponent,
     VentasComponent,
-    //ProductosComponent,
+    ProductosComponent,
     CobrosComponent,
     IngresosComponent,
     CapacitacionComponent,

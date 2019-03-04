@@ -10,6 +10,7 @@ import { IngresosComponent } from '../pages/ingresos/ingresos.component';
 import { CobrosComponent } from '../pages/cobros/cobros.component';
 import { VisitasComponent } from '../pages/visitas/visitas.component';
 import { CapacitacionComponent } from '../pages/capacitacion/capacitacion.component';
+import { ProductosComponent } from '../pages/productos/productos.component';
 
 @Component({
   templateUrl: 'app.html'
